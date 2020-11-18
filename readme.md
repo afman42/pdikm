@@ -1,5 +1,11 @@
 - Halaman User
- - Index - frontend
- - Kategori - frontend
- - Form - frontend
- - Soal - frontend
+    - Index - frontend
+    - Kategori - frontend
+    - Form - frontend
+    - Soal - frontend
+
+- Halaman Admin
+    - Index - frontend (belum)
+    - Pertanyaan (CRUD) - frontend (belum)
+    - Kategori (CRUD) - frontend (belum)
+    - Laporan (PDF atau Print) - frontend (belum)
