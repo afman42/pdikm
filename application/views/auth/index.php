@@ -9,12 +9,12 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         
         <!-- App favicon -->
-        <link rel="shortcut icon" href="assets/images/favicon.ico">
+        <link rel="shortcut icon" href="/assets/shreyu/images/favicon.ico">
 
         <!-- App css -->
-        <link href="<?= base_url(); ?>assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-        <link href="<?= base_url(); ?>assets/css/icons.min.css" rel="stylesheet" type="text/css" />
-        <link href="<?= base_url(); ?>assets/css/app.min.css" rel="stylesheet" type="text/css" />
+        <link href="<?= base_url(); ?>/assets/shreyu/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+        <link href="<?= base_url(); ?>/assets/shreyu/css/icons.min.css" rel="stylesheet" type="text/css" />
+        <link href="<?= base_url(); ?>/assets/shreyu/css/app.min.css" rel="stylesheet" type="text/css" />
 
     </head>
 
@@ -31,7 +31,7 @@
                                     <div class="col-md-12 p-5">
                                         <div class="mx-auto mb-5">
                                             <a href="index.html">
-                                                <img src="assets/images/logo.png" alt="" height="24" />
+                                                <img src="/assets/shreyu/images/logo.png" alt="" height="24" />
                                                 <h3 class="d-inline align-middle ml-1 text-logo">IKM</h3>
                                             </a>
                                         </div>
@@ -39,32 +39,41 @@
                                         <h6 class="h5 mb-0 mt-4">Selamat Datang Kembali</h6>
                                         <p class="text-muted mt-1 mb-4">Masukan Email dan Password
                                             Silakan Akses Panel Admin.</p>
-
-                                        <form action="#" class="authentication-form">
+                                        
+                                        <?php if (isset($_SESSION['error'])) {?>
+                                            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                                <?= $_SESSION['error'];?>
+                                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                        <?php } ?>
+                                        <form action="<?= site_url('auth');?>" class="authentication-form" method="post">
                                             <div class="form-group">
-                                                <label class="form-control-label">Email</label>
+                                                <label class="form-control-label">Username</label>
                                                 <div class="input-group input-group-merge">
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text">
-                                                            <i class="icon-dual" data-feather="mail"></i>
+                                                            <i class="icon-dual" data-feather="users"></i>
                                                         </span>
                                                     </div>
-                                                    <input type="email" class="form-control" id="email" placeholder="hello@coderthemes.com">
+                                                    <input type="text" name="username" class="form-control" placeholder="Silakan Masukan Username">
                                                 </div>
+                                                <?= form_error('username', '<small class="text-danger">', '</small>'); ?>
                                             </div>
 
                                             <div class="form-group mt-4">
                                                 <label class="form-control-label">Password</label>
-                                                <a href="pages-recoverpw.html" class="float-right text-muted text-unline-dashed ml-1">Forgot your password?</a>
                                                 <div class="input-group input-group-merge">
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text">
                                                             <i class="icon-dual" data-feather="lock"></i>
                                                         </span>
                                                     </div>
-                                                    <input type="password" class="form-control" id="password"
-                                                        placeholder="Enter your password">
+                                                    <input type="password" name="password" class="form-control" id="password"
+                                                        placeholder="Silakan Masukan password">
                                                 </div>
+                                                <?= form_error('password', '<small class="text-danger">', '</small>'); ?>
                                             </div>
 
                                             <!-- <div class="form-group mb-4">
@@ -123,10 +132,10 @@
         <!-- end page -->
 
         <!-- Vendor js -->
-        <script src="<?= base_url(); ?>assets/js/vendor.min.js"></script>
+        <script src="<?= base_url(); ?>/assets/shreyu/js/vendor.min.js"></script>
 
         <!-- App js -->
-        <script src="<?= base_url(); ?>assets/js/app.min.js"></script>
+        <script src="<?= base_url(); ?>/assets/shreyu/js/app.min.js"></script>
         
     </body>
 </html>

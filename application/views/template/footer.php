@@ -53,21 +53,44 @@
 
         <!-- Right bar overlay-->
         <div class="rightbar-overlay"></div>
-
         <!-- Vendor js -->
-        <script src="<?= base_url(); ?>assets/js/vendor.min.js"></script>
+        <script src="<?= base_url(); ?>assets/shreyu/js/vendor.min.js"></script>
+        
+        <?php
+        $uri = $this->uri->segment(2);
+        if ($uri == 'kategori' || $uri == 'soal') {
+        ?>
+        <script src="<?= base_url(); ?>assets/shreyu/libs/datatables/jquery.dataTables.min.js"></script>
+        <script src="<?= base_url(); ?>assets/shreyu/libs/datatables/dataTables.bootstrap4.min.js"></script>
+        <script src="<?= base_url(); ?>assets/shreyu/libs/datatables/dataTables.responsive.min.js"></script>
+        <script src="<?= base_url(); ?>assets/shreyu/libs/datatables/responsive.bootstrap4.min.js"></script>
+        <script src="<?= base_url(); ?>assets/shreyu/libs/datatables/dataTables.buttons.min.js"></script>
+        <script src="<?= base_url(); ?>assets/shreyu/libs/datatables/buttons.bootstrap4.min.js"></script>
+        <script src="<?= base_url(); ?>assets/shreyu/libs/datatables/buttons.html5.min.js"></script>
+        <script src="<?= base_url(); ?>assets/shreyu/libs/datatables/buttons.flash.min.js"></script>
+        <script src="<?= base_url(); ?>assets/shreyu/libs/datatables/buttons.print.min.js"></script>
 
-        <!-- optional plugins -->
-        <!-- <script src="assets/libs/moment/moment.min.js"></script>
-        <script src="assets/libs/apexcharts/apexcharts.min.js"></script>
-        <script src="assets/libs/flatpickr/flatpickr.min.js"></script> -->
-
+        <script src="<?= base_url(); ?>assets/shreyu/libs/datatables/dataTables.keyTable.min.js"></script>
+        <script src="<?= base_url(); ?>assets/shreyu/libs/datatables/dataTables.select.min.js"></script>
+        <script src="<?= base_url(); ?>assets/shreyu/js/pages/datatables.init.js"></script>
+        
+        <?php } ?>
         <!-- page js -->
-        <script src="<?= base_url(); ?>assets/js/pages/dashboard.init.js"></script>
+        
+        <!-- <script src="assets/shreyu/js/pages/dashboard.init.js"></script> -->
 
         <!-- App js -->
-        <script src="<?= base_url(); ?>assets/js/app.min.js"></script>
+        <script src="<?= base_url(); ?>assets/shreyu/js/app.min.js"></script>
+        <script src="<?= base_url(); ?>assets/shreyu/tinymce/tinymce.min.js"></script>
 
-
+        <script>
+        $(document).ready(function () {
+            tinymce.init({
+                selector: '#post-content',
+                plugins: 'table advlist lists image media anchor hr link autoresize',
+                toolbar: 'formatselect bold forecolor backcolor | bullist numlist | link image media anchor | table | code',
+            });
+        })
+      </script>
     </body>
 </html>
