@@ -13,22 +13,32 @@
                             <div class="col-12">
                                 <div class="card">
                                     <div class="card-body">
-                                        <form action="<?= site_url('admin/update_kategori/'.$kategori->id_kategori);?>" class="form-horizontal" method="post">
+                                        <form action="<?= site_url('admin/cek_tambah_soal_kategori/'.$kategori->id_kategori);?>" class="form-horizontal" method="post">
                                                     <div class="form-group">
-                                                        <label>Nama Kategori</label>
-                                                        <input type="text" class="form-control" name="nama" required value="<?= $kategori->nama_kategori; ?>">
+                                                        <label>Pertanyaan</label>
+                                                        <textarea name="soal" class="form-control" required placeholder="Masukan Soal"></textarea>
                                                     </div>
 
                                                     <div class="form-group">
-                                                        <label>Penjelasan</label>
-                                                        <textarea id="post-content" name="penjelasan"><?= $kategori->persyaratan; ?></textarea>
+                                                        <label>Jawaban 1</label>
+                                                        <input type="text" class="form-control" name="jawaban1" required placeholder="Masukan Jawaban 1">
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label>Jawaban 2</label>
+                                                        <input type="text" class="form-control" name="jawaban2" required placeholder="Masukan Jawaban 2">
                                                     </div>
                                                     
                                                     <div class="form-group">
-                                                        <label>Status</label><br>
-                                                        <input type="radio" name="status" value="0" <?php if($kategori->status == 0) echo 'checked'; ?>>Aktif
-                                                        <input type="radio" name="status" value="1" <?php if($kategori->status == 1) echo 'checked'; ?>>Tidak Aktif
+                                                        <label>Jawaban 3</label>
+                                                        <input type="text" class="form-control" name="jawaban3" required placeholder="Masukan Jawaban 3">
                                                     </div>
+
+                                                    <div class="form-group">
+                                                        <label>Jawaban 4</label>
+                                                        <input type="text" class="form-control" name="jawaban4" required placeholder="Masukan Jawaban 4">
+                                                    </div>
+
                                                     <div class="form-group">
                                                         <input type="submit" class="btn btn-sm btn-primary" value="Kirim">
                                                     </div>
