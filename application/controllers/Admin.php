@@ -229,4 +229,12 @@ class Admin extends CI_Controller {
 		$this->load->view('admin/cek_laporan',$data);
 		$this->load->view('template/footer');
 	}
+
+	public function export_laporan($id){
+		$this->load->library('pdfgenerator');
+		$data['join_responden'] = $this->Admin_model->join_responden_jawaban_user($id)->result_array();
+		$data['jumlah'] = $this->Admin_model->join_responden_jawaban_user_hitung($id)->row_array();
+		$html = $this->load->view('admin/export_pdf',$data,true);
+		$this->pdfgenerator->generate($html,'laporan');
+	}
 }

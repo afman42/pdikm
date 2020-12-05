@@ -6,6 +6,8 @@
                                 <h4 class="mb-1 mt-0">Laporan <?= $kategori->nama_kategori; ?></h4>
                             </div>
                             <div class="col-sm-8 col-xl-6">
+                            <form class="form-inline float-sm-right mt-3 mt-sm-0" method='POST' action='<?= site_url('admin/export_laporan/'.$kategori->id_kategori);?>'>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;<button type="submit" class="btn btn-primary">Ekspor Menjadi PDF</button>
                             </div>
                         </div>
 
@@ -33,8 +35,6 @@
                                                 <th><center>RL-6</center></th>
                                                 <th><center>RL-7</center></th>
                                                 <th><center>RL-8</center></th>
-                                                <th><center>RL-9</center></th>
-                                                <th><center>RL-10</center></th>
                                             </tr>
                                             </thead>
                                         
@@ -66,16 +66,14 @@
                                                     <td><center><?= $k->jawaban6;?></center></td>
                                                     <td><center><?= $k->jawaban7;?></center></td>
                                                     <td><center><?= $k->jawaban8;?></center></td>
-                                                    <td><center><?= $k->jawaban9;?></center></td>
-                                                    <td><center><?= $k->jawaban10;?></center></td>
                                                 </tr>
                                                 <?php } ?>
                                                 <?php
-                                $queryj = $this->db->query("SELECT  COUNT(*) AS jumlah FROM responden join jawaban_user where id_kategori='$kategori->id_kategori' AND id_responden=id_responden")->row();
+                                $queryj = $this->db->query("SELECT  COUNT(*) AS jumlah FROM responden join jawaban_user where id_kategori='$kategori->id_kategori'")->row();
                                 $count= $queryj->jumlah;
-                                $queryv =$this->db->query("SELECT * FROM responden join jawaban_user where id_kategori='$kategori->id_kategori' AND id_responden=id_responden");
+                                $queryv =$this->db->query("SELECT * FROM responden join jawaban_user where id_kategori='$kategori->id_kategori'");
 
-                                $jawaban1=0;$jawaban2=0;$jawaban3=0;$jawaban4=0;$jawaban5=0;$jawaban6=0;$jawaban7=0;$jawaban8=0;$jawaban9=0;$jawaban10=0;
+                                $jawaban1=0;$jawaban2=0;$jawaban3=0;$jawaban4=0;$jawaban5=0;$jawaban6=0;$jawaban7=0;$jawaban8=0;
                                 // while ( $datav = mysqli_fetch_array($queryv) ) {
                                     foreach ($queryv->result_array() as $datav) {
                                         $jawaban1=$jawaban1+$datav['jawaban1'];
@@ -86,8 +84,6 @@
                                         $jawaban6=$jawaban6+$datav['jawaban6'];
                                         $jawaban7=$jawaban7+$datav['jawaban7'];
                                         $jawaban8=$jawaban8+$datav['jawaban8'];
-                                        $jawaban9=$jawaban9+$datav['jawaban9'];
-                                        $jawaban10=$jawaban10+$datav['jawaban10'];
                                     }?>
                                     <?php
                                         $average1=$jawaban1/$count;
@@ -98,8 +94,6 @@
                                         $average6=$jawaban6/$count;
                                         $average7=$jawaban7/$count;
                                         $average8=$jawaban8/$count;
-                                        $average9=$jawaban9/$count;
-                                        $average10=$jawaban10/$count;
                                     ?>
                                     <tr>
                                     <th>
@@ -117,9 +111,6 @@
                                             <td><center><b><?php echo number_format( $average6,2);?></b></center></td>
                                             <td><center><b><?php echo number_format( $average7,2);?></b></center></td>
                                             <td><center><b><?php echo number_format( $average8,2);?></b></center></td>
-                                            <td><center><b><?php echo number_format( $average9,2);?></b></center></td>
-                                            <td><center><b><?php echo number_format( $average10,2);?></b></center></td>
-                                          
                                         </th>  
                                     </tr
                                     <tr>
@@ -138,13 +129,11 @@
                                          <td><center><b><?php echo number_format(($average6=$average6*0.125),2);?></b></center></td>
                                          <td><center><b><?php echo number_format(($average7=$average7*0.125),2);?></b></center></td>
                                          <td><center><b><?php echo number_format(($average8=$average8*0.125),2);?></b></center></td>
-                                         <td><center><b><?php echo number_format(($average9=$average9*0.125),2);?></b></center></td>
-                                         <td><center><b><?php echo number_format(($average10=$average10*0.125),2);?></b></center></td>
                                         </th>  
                                     </tr>
                                             </tbody>
                                         </table>
-                                        <?php $nrr=$average1+$average2+$average3+$average4+$average5+$average6+$average7+$average8+$average9+$average10; ?>
+                                        <?php $nrr=$average1+$average2+$average3+$average4+$average5+$average6+$average7+$average8; ?>
                                         <table width="100%" class="table table-striped table-bordered table-hover">
                                           <tr>
                                              <td width="61%"><b> Jumlah NRR IKM tertimbang </b></td>
@@ -156,6 +145,39 @@
                                              <td class="text-primary"><h3><center><b><?php echo number_format(($ikm=$nrr*25),2);?></b></center></h3></td>                            
                                         </tbody>
                                     </table>
+                                    
+                                    </form>
+                                    </div> <!-- end card-body -->
+                                </div> <!-- end card-->
+                            </div><!-- end col -->
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <table class="table table-bordered table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <td>No.</td>
+                                                    <td>Nama Responden</td>
+                                                    <td>Komentar & Saran</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            <?php
+                                            $no = 1;
+                                            $query = $this->db->query("SELECT * FROM responden join jawaban_user where id_kategori='$kategori->id_kategori'")->result();
+                                            foreach ($query as $k) {
+                                            ?>
+                                            <tr>
+                                                <td><?= $no++; ?></td>
+                                                <td><?= $k->nama; ?></td>
+                                                <td><?= $k->komentar; ?></td>
+                                            </tr>
+                                            <?php } ?>
+                                            </tbody>
+                                        </table>
                                     </div> <!-- end card-body -->
                                 </div> <!-- end card-->
                             </div><!-- end col -->

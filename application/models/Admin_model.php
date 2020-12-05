@@ -109,4 +109,15 @@ class Admin_model extends CI_Model {
         $this->db->order_by('jawaban_user.id_responden', 'DESC');
         return $this->db->get();
     }
+
+    public function join_responden_jawaban_user_hitung($id)
+    {
+        $this->db->select('COUNT(*) AS jumlah');
+        $this->db->from('responden');
+        $this->db->where('responden.id_kategori',$id);
+        $this->db->join('jawaban_user', 'responden.id_responden = jawaban_user.id_responden');
+        $this->db->order_by('jawaban_user.id_responden', 'DESC');
+        return $this->db->get();
+    }
+
 }
