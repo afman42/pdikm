@@ -32,9 +32,12 @@ class Auth extends CI_Controller {
 			if ($tampil->level == 'admin') {
 				$_SESSION['id_user'] = $tampil->id_user;
 				$_SESSION['level'] = $tampil->level;
+				$_SESSION['login'] = TRUE;
 				redirect(site_url('admin/index'));
 			}else {
+				$_SESSION['id_user'] = $tampil->id_user;
 				$_SESSION['level'] = $tampil->level;
+				$_SESSION['login'] = TRUE;
 				redirect(site_url('kepala_lurah/index'));
 			}
 		}else{

@@ -93,4 +93,20 @@ class Admin_model extends CI_Model {
         $this->db->where('id_soal', $id);
         $this->db->delete('jawaban');
     }
+
+    public function cek_hitung_responden($id)
+    {
+        $this->db->where('id_kategori',$id);
+        return $this->db->get('responden');
+    }
+
+    public function join_responden_jawaban_user($id)
+    {
+        $this->db->select('*');
+        $this->db->from('responden');
+        $this->db->where('responden.id_kategori',$id);
+        $this->db->join('jawaban_user', 'responden.id_responden = jawaban_user.id_responden');
+        $this->db->order_by('jawaban_user.id_responden', 'DESC');
+        return $this->db->get();
+    }
 }

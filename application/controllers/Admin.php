@@ -7,6 +7,10 @@ class Admin extends CI_Controller {
 	{
 		parent::__construct();
 		$this->load->model('Admin_model');
+		if ($_SESSION['login'] != TRUE) {
+			$this->session->set_flashdata('error','Harus Login Terlebih Dahulu');
+			redirect(site_url('auth/index'));
+		}
 	}
 
 	public function index()
@@ -169,5 +173,60 @@ class Admin extends CI_Controller {
 		}else{
 			echo '<script>alert("Gagal Di Hapus"); window.location.href="'.site_url('admin/soal_kategori/'.$model->id_kategori).'"</script>';
 		}
+	}
+
+	public function ubah_password()
+	{		
+		$this->form_validation->set_rules('new_password', 'Password', 'required|trim|min_length[3]|matches[repeat_password]', [
+            'matches' => 'Password tidak Sama!',
+			'min_length' => 'Password terlalu pendek!',
+			'required' => "Password kosong, Silakan Diisi"
+        ]);
+        $this->form_validation->set_rules('repeat_password', 'Password Ulang', 'required|trim|min_length[3]|matches[new_password]',[
+            'matches' => 'Password Ulang tidak Sama!',
+			'min_length' => 'Password Ulang terlalu pendek!',
+			'required' => "Password Ulang kosong, Silakan Diisi"
+        ]);
+        if ($this->form_validation->run() == false){
+			$data['header'] = 'Admin | Profil';
+			$this->load->view('template/header',$data);
+			$this->load->view('admin/ubah_password');
+			$this->load->view('template/footer');
+        }else{
+            $this->update_profil();
+        }
+	}
+
+	protected function update_profil()
+	{
+		$password = $this->input->post('new_password');
+        $this->db->set('password',$password);
+        $this->db->where('id_user', $this->session->userdata('id_user'));
+        $cek = $this->db->update('users');
+        if ($cek) {        
+            $this->session->set_flashdata('message', '<div class="alert alert-success">Password Telah Diperbaharui</div>');
+            redirect(site_url('admin/ubah_password'));
+        }else{
+            $this->session->set_flashdata('message', '<div class="alert alert-alert">Password Gagal Telah Diperbaharui</div>');
+            redirect(site_url('admin/ubah_password'));
+        }
+	}
+
+	public function laporan()
+	{
+		$data['kategori'] = $this->Admin_model->kategori()->result();
+		$this->load->view('template/header');
+		$this->load->view('admin/laporan',$data);
+		$this->load->view('template/footer');
+	}
+
+	public function cek_laporan($id)
+	{
+		$data['kategori'] = $this->Admin_model->cek_kategori($id)->row();
+		$data['responden'] = $this->Admin_model->cek_hitung_responden($id);
+		$data['join_responden'] = $this->Admin_model->join_responden_jawaban_user($id)->result();
+		$this->load->view('template/header');
+		$this->load->view('admin/cek_laporan',$data);
+		$this->load->view('template/footer');
 	}
 }

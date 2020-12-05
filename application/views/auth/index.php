@@ -37,7 +37,7 @@
                                         </div>
 
                                         <h6 class="h5 mb-0 mt-4">Selamat Datang Kembali</h6>
-                                        <p class="text-muted mt-1 mb-4">Masukan Email dan Password
+                                        <p class="text-muted mt-1 mb-4">Masukan Username dan Password
                                             Silakan Akses Panel Admin.</p>
                                         
                                         <?php if (isset($_SESSION['error'])) {?>

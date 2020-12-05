@@ -14,11 +14,16 @@
                                     <span> Laporan </span>
                                 </a>
                             </li>
-
+                            <li>
+                                <a href="<?= site_url('admin/ubah_password');?>">
+                                    <i data-feather="lock"></i>
+                                    <span> Ubah Password </span>
+                                </a>
+                            </li>
                             <li>
                                 <a href="charts-apex.html">
-                                    <i data-feather="pie-chart"></i>
-                                    <span> Charts </span>
+                                    <i data-feather="log-out"></i>
+                                    <span> Keluar </span>
                                 </a>
                             </li>
                         </ul>
