@@ -2,20 +2,68 @@
                 <div class="content">
                     <div class="container-fluid">
                         <div class="row page-title align-items-center">
-                            <div class="col-sm-4 col-xl-6">
+                            <div class="col-sm-4 col-xl-4">
                                 <h4 class="mb-1 mt-0">Laporan <?= $kategori->nama_kategori; ?></h4>
                             </div>
-                            <div class="col-sm-8 col-xl-6">
-                            <?php if ($responden->num_rows() > 0) {?>
-                            <form class="form-inline float-sm-right mt-3 mt-sm-0" method='POST' action='<?= site_url('admin/export_laporan/'.$kategori->id_kategori);?>'>
-                                        &nbsp;&nbsp;&nbsp;&nbsp;<button type="submit" class="btn btn-primary">Ekspor Menjadi PDF</button>
+                            <div class="col-sm-4 col-xl-6"></div>
+                            <div class="col-sm-4 col-xl-2">
+                            <?php
+                                $id_kategori = $_GET['kategori'];
+                                $bulan = $_GET['bulan'];
+                            ?>
+                            <?php if ($responden->num_rows() > 0): ?>
+                               
+                               <a href="<?= site_url('lurah/export_laporan_perbulan?kategori='.$id_kategori.'&bulan='.$bulan);?>" class="btn btn-primary">Ekspor Menjadi PDF</a>
                             </form>
-                        <?php } ?>
+                            <?php endif ?>
                             </div>
                         </div>
 
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <form action="<?= site_url('lurah/cek_laporan');?>" method="get">
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <select name='kategori' class="form-control" required>
+                                                            <option value="">-- Pilih Kategori --</option>
+                                                            <?php foreach ($kategori_result as $k): ?>
+                                                                <option value="<?= $k->id_kategori; ?>"><?= $k->nama_kategori; ?></option>
+                                                            <?php endforeach ?>
+                                                        </select>
+                                                      </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <select name='bulan' class="form-control" required>
+                                                            <option value="">-- Pilih Bulan --</option>
+                                                            <option value="01">Januari</option>
+                                                            <option value="02">Febuari</option>
+                                                            <option value="03">Maret</option>
+                                                            <option value="04">April</option>
+                                                            <option value="05">Mei</option>
+                                                            <option value="06">Juni</option>
+                                                            <option value="07">Juli</option>
+                                                            <option value="08">Agustus</option>
+                                                            <option value="09">September</option>
+                                                            <option value="10">Oktober</option>
+                                                            <option value="11">November</option>
+                                                            <option value="12">Desember</option>
+                                                        </select>
+                                                      </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <button type="submit" class="btn btn-primary">Cari</button>
+                                                </div>
+                                            </div>   
+                                        </form>
+                                    </div> <!-- end card-body -->
+                                </div> <!-- end card-->
+                            </div><!-- end col -->
+                        </div>
                         <!-- content -->
-                        <?php if ($responden->num_rows() > 0) {?>
                         <div class="row">
                             <div class="col-12">
                                 <div class="card">
@@ -72,9 +120,10 @@
                                                 </tr>
                                                 <?php } ?>
                                                 <?php
-                                $queryj = $this->db->query("SELECT  COUNT(*) AS jumlah FROM responden join jawaban_user where id_kategori='$kategori->id_kategori'")->row();
+                                                $bulan = $_GET['bulan'];
+                                $queryj = $this->db->query("SELECT  COUNT(*) AS jumlah FROM responden join jawaban_user where id_kategori='$kategori->id_kategori' AND MONTH(tanggal) = '$bulan'")->row();
                                 $count= $queryj->jumlah;
-                                $queryv =$this->db->query("SELECT * FROM responden join jawaban_user where id_kategori='$kategori->id_kategori'");
+                                $queryv =$this->db->query("SELECT * FROM responden join jawaban_user where id_kategori='$kategori->id_kategori' AND MONTH(tanggal) = '$bulan'");
 
                                 $jawaban1=0;$jawaban2=0;$jawaban3=0;$jawaban4=0;$jawaban5=0;$jawaban6=0;$jawaban7=0;$jawaban8=0;
                                 // while ( $datav = mysqli_fetch_array($queryv) ) {
@@ -89,6 +138,16 @@
                                         $jawaban8=$jawaban8+$datav['jawaban8'];
                                     }?>
                                     <?php
+                                    if ($count ==  0) {
+                                        $average1=0;
+                                        $average2=0;
+                                        $average3=0;
+                                        $average4=0;
+                                        $average5=0;
+                                        $average6=0;
+                                        $average7=0;
+                                        $average8=0;
+                                    }else{
                                         $average1=$jawaban1/$count;
                                         $average2=$jawaban2/$count;
                                         $average3=$jawaban3/$count;
@@ -97,6 +156,7 @@
                                         $average6=$jawaban6/$count;
                                         $average7=$jawaban7/$count;
                                         $average8=$jawaban8/$count;
+                                    }
                                     ?>
                                     <tr>
                                     <th>
@@ -149,7 +209,6 @@
                                         </tbody>
                                     </table>
                                     
-                                    </form>
                                     </div> <!-- end card-body -->
                                 </div> <!-- end card-->
                             </div><!-- end col -->
@@ -170,7 +229,8 @@
                                             <tbody>
                                             <?php
                                             $no = 1;
-                                            $query = $this->db->query("SELECT * FROM responden join jawaban_user where id_kategori='$kategori->id_kategori'")->result();
+
+                                            $query = $this->db->query("SELECT * FROM responden join jawaban_user where id_kategori='$kategori->id_kategori'  AND MONTH(tanggal) = '$bulan'")->result();
                                             foreach ($query as $k) {
                                             ?>
                                             <tr>
@@ -185,19 +245,17 @@
                                 </div> <!-- end card-->
                             </div><!-- end col -->
                         </div>
-                        <?php }else{?>
-                            <div class="row">
+                            <!-- <div class="row">
                                 <div class="col-12">
                                     <div class="card">
                                         <div class="card-body">
                                             <div class="alert alert-info">
                                                 <strong>BELUM ADA JAWABAN RESPONDEN UNTUK KATEGORI INI !</strong>
                                             </div>
-                                        </div> <!-- end card-body -->
-                                    </div> <!-- end card-->
-                                </div><!-- end col -->
-                            </div>
-                        <?php } ?>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> -->
                     </div>
                 </div> <!-- content -->
 

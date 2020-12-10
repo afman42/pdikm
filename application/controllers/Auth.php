@@ -38,11 +38,17 @@ class Auth extends CI_Controller {
 				$_SESSION['id_user'] = $tampil->id_user;
 				$_SESSION['level'] = $tampil->level;
 				$_SESSION['login'] = TRUE;
-				redirect(site_url('kepala_lurah/index'));
+				redirect(site_url('lurah/index'));
 			}
 		}else{
 			$this->session->set_flashdata('error','Username dan Password Salah');
 			redirect(site_url('auth/index'));
 		}
 	}
+
+	public function logout()
+    {
+        $this->session->sess_destroy();
+        redirect(site_url('auth'));
+    }
 }

@@ -16,7 +16,7 @@
 
         <!-- plugins -->
         <?php
-        if ($uri == 'kategori' || $uri == 'soal_kategori') {
+        if ($uri == 'kategori' || $uri == 'soal_kategori' || $uri = 'laporan') {
         ?>
         <link href="<?= base_url(); ?>assets/shreyu/libs/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
         <link href="<?= base_url(); ?>assets/shreyu/libs/datatables/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
