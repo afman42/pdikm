@@ -121,9 +121,9 @@
                                                 <?php } ?>
                                                 <?php
                                                 $bulan = $_GET['bulan'];
-                                $queryj = $this->db->query("SELECT  COUNT(*) AS jumlah FROM responden join jawaban_user where id_kategori='$kategori->id_kategori' AND MONTH(tanggal) = '$bulan'")->row();
+                                $queryj = $this->db->query("SELECT  COUNT(*) AS jumlah FROM responden join jawaban_user where responden.id_kategori='$kategori->id_kategori' AND MONTH(tanggal) = '$bulan'")->row();
                                 $count= $queryj->jumlah;
-                                $queryv =$this->db->query("SELECT * FROM responden join jawaban_user where id_kategori='$kategori->id_kategori' AND MONTH(tanggal) = '$bulan'");
+                                $queryv =$this->db->query("SELECT * FROM responden join jawaban_user where responden.id_kategori='$kategori->id_kategori' AND MONTH(tanggal) = '$bulan'");
 
                                 $jawaban1=0;$jawaban2=0;$jawaban3=0;$jawaban4=0;$jawaban5=0;$jawaban6=0;$jawaban7=0;$jawaban8=0;
                                 // while ( $datav = mysqli_fetch_array($queryv) ) {
@@ -230,7 +230,7 @@
                                             <?php
                                             $no = 1;
 
-                                            $query = $this->db->query("SELECT * FROM responden join jawaban_user where id_kategori='$kategori->id_kategori'  AND MONTH(tanggal) = '$bulan'")->result();
+                                            $query = $this->db->query("SELECT * FROM responden join jawaban_user where responden.id_kategori='$kategori->id_kategori'  AND MONTH(tanggal) = '$bulan'")->result();
                                             foreach ($query as $k) {
                                             ?>
                                             <tr>
