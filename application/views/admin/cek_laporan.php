@@ -170,7 +170,7 @@
                                             <tbody>
                                             <?php
                                             $no = 1;
-                                            $query = $this->db->query("SELECT * FROM responden join jawaban_user where responden.id_kategori='$kategori->id_kategori'")->result();
+                                            $query = $this->db->query("SELECT * FROM responden inner join jawaban_user on responden.id_responden = jawaban_user.id_responden where responden.id_kategori='$kategori->id_kategori'")->result();
                                             foreach ($query as $k) {
                                             ?>
                                             <tr>

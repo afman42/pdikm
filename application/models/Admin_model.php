@@ -11,7 +11,7 @@ class Admin_model extends CI_Model
 
     public function tampil_data_aktif()
     {
-        $query = $this->db->query("SELECT * FROM kategori WHERE status=1");
+        $query = $this->db->query("SELECT * FROM kategori WHERE status=0");
         return $query->result();
     }
 
