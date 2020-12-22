@@ -18,7 +18,7 @@
 <nav class="main-header navbar-expand-md navbar-light navbar-blue">
     <div class="">
         <div class="bar">
-        <img src="<?= base_url() ?>assets/images/logo-instansi.png" alt="" class="" width="60" height="60">
+        <img src="<?= base_url() ?>assets/images/kabupaten_hulu.png" alt="" class="" width="60" height="60">
             <h5>SISTEM INFORMASI SURVEI</h5>
             <p>Jalan MT HAryono, No 5</p>
         </div>

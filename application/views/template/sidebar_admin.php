@@ -15,9 +15,9 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="<?= site_url('admin/ubah_password');?>">
+                                <a href="<?= site_url('admin/ubah_biodata');?>">
                                     <i data-feather="lock"></i>
-                                    <span> Ubah Password </span>
+                                    <span> Ubah Biodata </span>
                                 </a>
                             </li>
                             <li>

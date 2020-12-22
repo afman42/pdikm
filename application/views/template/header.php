@@ -16,7 +16,7 @@
 
         <!-- plugins -->
         <?php
-        if ($uri == 'kategori' || $uri == 'soal_kategori' || $uri = 'laporan') {
+        if ($uri == 'kategori' || $uri == 'soal_kategori' || $uri = 'laporan' || $uri == 'non_aktif_kategori' || $uri == 'aktif_kategori') {
         ?>
         <link href="<?= base_url(); ?>assets/shreyu/libs/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
         <link href="<?= base_url(); ?>assets/shreyu/libs/datatables/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
@@ -79,8 +79,15 @@
             <!-- ========== Left Sidebar Start ========== -->
             <div class="left-side-menu">
                 <div class="media user-profile mt-2 mb-2">
-                    <!-- <img src="<?= base_url();?>assets/shreyu/images/users/avatar-7.jpg" class="avatar-sm rounded-circle mr-2" alt="Shreyu" />
-                    <img src="<?= base_url();?>assets/shreyu/images/users/avatar-7.jpg" class="avatar-xs rounded-circle mr-2" alt="Shreyu" /> -->
+                    <?php
+                    $user = $this->db->get_where('users',['level' => $_SESSION['level']])->row();
+                    if ($user->foto != null) { ?>
+                        <img src="<?= base_url().$user->foto;?>" class="avatar-sm rounded-circle mr-2" alt="Shreyu" />
+                        <img src="<?= base_url().$user->foto;?>" class="avatar-xs rounded-circle mr-2" alt="Shreyu" />
+                    <?php } else { ?>
+                        <img src="<?= base_url();?>assets/shreyu/images/users/avatar-7.jpg" class="avatar-sm rounded-circle mr-2" alt="Shreyu" />
+                        <img src="<?= base_url();?>assets/shreyu/images/users/avatar-7.jpg" class="avatar-xs rounded-circle mr-2" alt="Shreyu" />
+                    <?php }?>
                     <?php if ($_SESSION['level'] == 'admin') {?>
                         <div class="media-body">
                             <h6 class="pro-user-name mt-0 mb-0">Admin</h6>

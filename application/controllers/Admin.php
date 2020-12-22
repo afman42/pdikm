@@ -177,8 +177,14 @@ class Admin extends CI_Controller
 		}
 	}
 
-	public function ubah_password()
+	public function ubah_biodata()
 	{
+		$this->form_validation->set_rules('nama', 'Nama', 'required', [
+			'required' => "Nama kosong, Silakan Diisi"
+		]);
+		$this->form_validation->set_rules('username', 'Username', 'required', [
+			'required' => "Username kosong, Silakan Diisi"
+		]);
 		$this->form_validation->set_rules('new_password', 'Password', 'required|trim|min_length[3]|matches[repeat_password]', [
 			'matches' => 'Password tidak Sama!',
 			'min_length' => 'Password terlalu pendek!',
@@ -191,8 +197,9 @@ class Admin extends CI_Controller
 		]);
 		if ($this->form_validation->run() == false) {
 			$data['header'] = 'Admin | Profil';
+			$data['user'] = $this->db->get_where('users', ['level' => $_SESSION['level']])->row();
 			$this->load->view('template/header', $data);
-			$this->load->view('admin/ubah_password');
+			$this->load->view('admin/ubah_password',$data);
 			$this->load->view('template/footer');
 		} else {
 			$this->update_profil();
@@ -201,16 +208,52 @@ class Admin extends CI_Controller
 
 	protected function update_profil()
 	{
-		$password = $this->input->post('new_password');
-		$this->db->set('password', $password);
-		$this->db->where('id_user', $this->session->userdata('id_user'));
-		$cek = $this->db->update('users');
-		if ($cek) {
-			$this->session->set_flashdata('message', '<div class="alert alert-success">Password Telah Diperbaharui</div>');
-			redirect(site_url('admin/ubah_password'));
-		} else {
-			$this->session->set_flashdata('message', '<div class="alert alert-alert">Password Gagal Telah Diperbaharui</div>');
-			redirect(site_url('admin/ubah_password'));
+		$this->load->library('upload');
+		$post = $this->input->post();
+		$config['upload_path'] = './uploads/';
+		$config['allowed_types'] = 'jpg|png|jpeg';
+		$config['max_size'] = 1024;
+		
+		$this->upload->initialize($config);
+			if ($this->upload->do_upload('foto')){
+				$upload_data = $this->upload->data();
+				$featured_image = $upload_data['file_name'];
+				$data = [
+					'username' => $post['username'],
+					'nama' => $post['nama'],
+					'password' => $post['new_password'],
+					'foto' => 'uploads/'.$featured_image,
+				];
+			$this->db->where('level',$_SESSION['level']);
+			$cek = $this->db->update('users',$data);
+			if ($cek) {
+				$this->session->set_flashdata('message', '<div class="alert alert-success">Biodata Telah Diperbaharui</div>');
+				redirect(site_url('admin/ubah_password'));
+			} else {
+				$this->session->set_flashdata('message', '<div class="alert alert-alert">Biodata Gagal Telah Diperbaharui</div>');
+				redirect(site_url('admin/ubah_password'));
+			}
+		}elseif (!$this->upload->do_upload('foto')) {
+			$data = [
+				'username' => $post['username'],
+				'nama' => $post['nama'],
+				'password' => $post['new_password'],
+			];
+			$this->db->where('level',$_SESSION['level']);
+			$cek = $this->db->update('users',$data);
+			if ($cek) {
+				$this->session->set_flashdata('message', '<div class="alert alert-success">Biodata Telah Diperbaharui</div>');
+				redirect(site_url('admin/ubah_password'));
+			} else {
+				$this->session->set_flashdata('message', '<div class="alert alert-alert">Biodata Gagal Telah Diperbaharui</div>');
+				redirect(site_url('admin/ubah_password'));
+			}
+		}else{
+			$error = array('error' => $this->upload->display_errors());
+			$data['header'] = 'Admin | Profil';
+			$this->load->view('template/header', $data);
+			$this->load->view('admin/ubah_password',$error);
+			$this->load->view('template/footer');
 		}
 	}
 

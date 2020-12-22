@@ -8,6 +8,7 @@ class Lurah extends CI_Controller {
 		parent::__construct();
 		$this->load->model('Lurah_model');
 		$this->load->model('Admin_model');
+		$this->load->model('Soal_model');
 		if ($_SESSION['login'] != TRUE) {
 			$this->session->set_flashdata('error','Harus Login Terlebih Dahulu');
 			redirect(site_url('auth/index'));
@@ -20,6 +21,35 @@ class Lurah extends CI_Controller {
 		$data['kategori_non'] = $this->Lurah_model->kategori_offline()->result();
 		$this->load->view('template/header');
 		$this->load->view('lurah/index',$data);
+		$this->load->view('template/footer');
+	}
+
+	public function cek_kategori($id)
+	{
+		$data = array(
+            'soal' => $this->Soal_model->tampil_data(),
+            'start' => 1,
+			'start_soal' => 1,
+			'kategori' => $this->Lurah_model->cek_kategori($id)->row()
+        );
+		$this->load->view('template/header');
+		$this->load->view('lurah/cek_kategori',$data);
+		$this->load->view('template/footer');
+	}
+
+	public function aktif_kategori()
+	{
+		$data['kategori'] = $this->Lurah_model->kategori_online()->result();
+		$this->load->view('template/header');
+		$this->load->view('lurah/pilih_kategori',$data);
+		$this->load->view('template/footer');
+	}
+
+	public function non_aktif_kategori()
+	{
+		$data['kategori'] = $this->Lurah_model->kategori_offline()->result();
+		$this->load->view('template/header');
+		$this->load->view('lurah/pilih_kategori',$data);
 		$this->load->view('template/footer');
 	}
 

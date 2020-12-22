@@ -60,7 +60,7 @@ class Beranda extends CI_Controller {
     {
         $id= $this->uri->segment(3);
         $data = array(
-            'soal' => $this->Soal_model->tampil_data(),
+            'soal' => $this->Soal_model->tampil_data($id),
             'start' => 1,
             'start_soal' => 1
         );
@@ -94,6 +94,7 @@ class Beranda extends CI_Controller {
     }
     public function simpan_jawaban()
     {
+        
         $data = array (
             'id_jawaban_user' => $this->input->post('id_jawaban_user'),
             'jawaban1' => $this->input->post('jawaban1'),
@@ -104,8 +105,8 @@ class Beranda extends CI_Controller {
             'jawaban6' => $this->input->post('jawaban6'),
             'jawaban7' => $this->input->post('jawaban7'),
             'jawaban8' => $this->input->post('jawaban8'),
-            'jawaban9' => $this->input->post('jawaban9'),
-            'jawaban10' => $this->input->post('jawaban10'),
+            // 'jawaban9' => $this->input->post('jawaban9'),
+            // 'jawaban10' => $this->input->post('jawaban10'),
             'komentar' => $this->input->post('komentar'),
             'id_responden' => $this->input->post('id_responden')
         );

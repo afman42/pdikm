@@ -58,7 +58,7 @@
         
         <?php
         $uri = $this->uri->segment(2);
-        if ($uri == 'kategori' || $uri == 'soal_kategori' || $uri == 'laporan') {
+        if ($uri == 'kategori' || $uri == 'soal_kategori' || $uri == 'laporan' || $uri == 'non_aktif_kategori' || $uri == 'aktif_kategori') {
         ?>
         <script src="<?= base_url(); ?>assets/shreyu/libs/datatables/jquery.dataTables.min.js"></script>
         <script src="<?= base_url(); ?>assets/shreyu/libs/datatables/dataTables.bootstrap4.min.js"></script>

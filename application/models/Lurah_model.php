@@ -5,7 +5,12 @@ class Lurah_model extends CI_Model {
 
 	public function kategori_offline()
 	{
-		$this->db->select('COUNT(*) AS hitung');
+		$uri = $this->uri->segment(2);
+        if ($uri == 'non_aktif_kategori') {
+		    $this->db->select('*');
+        } else {
+		    $this->db->select('COUNT(*) AS hitung');
+        }
 		$this->db->where('status',1);
 		$this->db->from('kategori');
 		return $this->db->get();
@@ -13,7 +18,12 @@ class Lurah_model extends CI_Model {
 
 	public function kategori_online()
 	{
-		$this->db->select('COUNT(*) AS hitung');
+        $uri = $this->uri->segment(2);
+        if ($uri == 'aktif_kategori') {
+		    $this->db->select('*');
+        } else {
+		    $this->db->select('COUNT(*) AS hitung');
+        }
 		$this->db->where('status',0);
 		$this->db->from('kategori');
 		return $this->db->get();

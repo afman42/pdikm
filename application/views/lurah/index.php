@@ -13,37 +13,41 @@
                         <!-- content -->
                         <div class="row">
                             <div class="col-md-6 col-xl-3">
-                                <div class="card">
-                                    <div class="card-body p-0">
-                                        <div class="media p-3">
-                                            <div class="media-body">
-                                                <span class="text-muted text-uppercase font-size-12 font-weight-bold">Kategori Aktif</span>
-                                                <h2 class="mb-0">
-                                                	<?php foreach ($kategori_aktif as $k): ?>
-                                                		<?= $k->hitung; ?>
-                                                	<?php endforeach ?>
-                                                </h2>
+                                <a href="<?= site_url('lurah/aktif_kategori');?>">
+                                    <div class="card">
+                                        <div class="card-body p-0">
+                                            <div class="media p-3">
+                                                <div class="media-body">
+                                                    <span class="text-muted text-uppercase font-size-12 font-weight-bold">Kategori Aktif</span>
+                                                    <h2 class="mb-0">
+                                                        <?php foreach ($kategori_aktif as $k): ?>
+                                                            <?= $k->hitung; ?>
+                                                        <?php endforeach ?>
+                                                    </h2>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </a>
                             </div>
 
                             <div class="col-md-6 col-xl-3">
-                                <div class="card">
-                                    <div class="card-body p-0">
-                                        <div class="media p-3">
-                                            <div class="media-body">
-                                                <span class="text-muted text-uppercase font-size-12 font-weight-bold">Kategori Non Aktif</span>
-                                                <h2 class="mb-0">
-                                                	<?php foreach ($kategori_non as $k): ?>
-                                                		<?= $k->hitung; ?>
-                                                	<?php endforeach ?>
-                                                </h2>
+                                <a href="<?= site_url('lurah/non_aktif_kategori');?>">
+                                    <div class="card">
+                                        <div class="card-body p-0">
+                                            <div class="media p-3">
+                                                <div class="media-body">
+                                                    <span class="text-muted text-uppercase font-size-12 font-weight-bold">Kategori Non Aktif</span>
+                                                    <h2 class="mb-0">
+                                                        <?php foreach ($kategori_non as $k): ?>
+                                                            <?= $k->hitung; ?>
+                                                        <?php endforeach ?>
+                                                    </h2>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </a>
                             </div>
 
                             <!-- <div class="col-md-6 col-xl-3">
