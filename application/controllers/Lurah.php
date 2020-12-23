@@ -86,14 +86,160 @@ class Lurah extends CI_Controller {
 
 	public function export_laporan_perbulan()
 	{
-		$this->load->library('pdfgenerator');
 		$kategori = $_GET['kategori'];
 		$bulan = $_GET['bulan'];
 		if (isset($kategori) && isset($bulan)) {
-			$data['join_responden'] = $this->Lurah_model->join_responden_jawaban_user($kategori,$bulan)->result_array();
-			$data['jumlah'] = $this->Lurah_model->join_responden_jawaban_user_hitung($kategori,$bulan)->row_array();
-			$html = $this->load->view('lurah/export_pdf',$data,true);
-			$this->pdfgenerator->generate($html,'laporan');
+			$join_responden = $this->Lurah_model->join_responden_jawaban_user($kategori,$bulan)->result();
+			$hitung = $this->Lurah_model->join_responden_jawaban_user_hitung($kategori,$bulan)->row();
+			$this->load->library('Pdf'); // MEMANGGIL LIBRARY YANG KITA BUAT TADI
+			$kategori = $this->Admin_model->cek_kategori($kategori)->row();
+
+			error_reporting(0); // AGAR ERROR MASALAH VERSI PHP TIDAK MUNCUL
+	
+			$pdf = new FPDF('L', 'mm','Letter');
+	
+			$pdf->AddPage();
+			$pdf->Image('./assets/images/kabupaten_hulu.png',20,6,30);
+			$pdf->SetFont('Arial','B',16);
+			$pdf->Cell(10);
+			$pdf->Cell(0,7,'Indeks Kepuasan Masyarakat',0,1,'C');
+			$pdf->Cell(0,7,'Jln MT Haryono SH',0,1,'C');
+			$pdf->Ln(30);
+			
+			$pdf->Cell(0,7,'Survei',0,1,'C');
+			$pdf->Cell(0,7,$kategori->nama_kategori,0,1,'C');
+			$pdf->Cell(10,7,'',0,1);
+	
+
+			$pdf->SetFont('Arial','B',10);
+			$pdf->Cell(10,6,'No',1,0,'C');
+			$pdf->Cell(40,6,'Nama',1,0,'C');
+			$pdf->Cell(40,6,'Pendidikan',1,0,'C');
+			$pdf->Cell(30,6,'Pekerjaan',1,0,'C');
+			$pdf->Cell(30,6,'Jenis Kelamin',1,0,'C');
+			$pdf->Cell(10,6,'Umur',1,0,'C');
+			$pdf->Cell(25,6,'Waktu',1,0,'C');
+			$pdf->Cell(10,6,'RL-1',1,0,'C');
+			$pdf->Cell(10,6,'RL-2',1,0,'C');
+			$pdf->Cell(10,6,'RL-3',1,0,'C');
+			$pdf->Cell(10,6,'RL-4',1,0,'C');
+			$pdf->Cell(10,6,'RL-5',1,0,'C');
+			$pdf->Cell(10,6,'RL-6',1,0,'C');
+			$pdf->Cell(10,6,'RL-7',1,0,'C');
+			$pdf->Cell(10,6,'RL-8',1,1,'C');
+
+			$pdf->SetFont('Arial','',10);
+			// $resultse = $this->Admin_model->join_responden_jawaban_user($id);
+			// $hitung = $this->Admin_model->join_responden_jawaban_user_hitung($id)->row();
+			$no=0;
+			foreach ($join_responden as $data){
+				$no++;
+				$pdf->Cell(10,6,$no,1,0, 'C');
+				$pdf->Cell(40,6,$data->nama,1,0, 'C');
+				$pdf->Cell(40,6,$data->jenis_pendidikan,1,0, 'C');
+				$pdf->Cell(30,6,$data->pekerjaan,1,0, 'C');
+				$pdf->Cell(30,6,$data->jenis_kelamin,1,0, 'C');
+				$pdf->Cell(10,6,$data->umur,1,0, 'C');
+				$pdf->Cell(25,6,$data->tanggal,1,0,'C');
+				$pdf->Cell(10,6,$data->jawaban1,1,0,'C');
+				$pdf->Cell(10,6,$data->jawaban2,1,0,'C');
+				$pdf->Cell(10,6,$data->jawaban3,1,0,'C');
+				$pdf->Cell(10,6,$data->jawaban4,1,0,'C');
+				$pdf->Cell(10,6,$data->jawaban5,1,0,'C');
+				$pdf->Cell(10,6,$data->jawaban6,1,0,'C');
+				$pdf->Cell(10,6,$data->jawaban7,1,0,'C');
+				$pdf->Cell(10,6,$data->jawaban8,1,1,'C');
+			}
+			$count=$hitung->jumlah;
+
+			$jawaban1=0;$jawaban2=0;$jawaban3=0;$jawaban4=0;$jawaban5=0;$jawaban6=0;$jawaban7=0;$jawaban8=0;
+			foreach ($join_responden as $datav) {
+				$jawaban1=$jawaban1+$datav->jawaban1;
+				$jawaban2=$jawaban2+$datav->jawaban2;
+				$jawaban3=$jawaban3+$datav->jawaban3;
+				$jawaban4=$jawaban4+$datav->jawaban4;
+				$jawaban5=$jawaban5+$datav->jawaban5;
+				$jawaban6=$jawaban6+$datav->jawaban6;
+				$jawaban7=$jawaban7+$datav->jawaban7;
+				$jawaban8=$jawaban8+$datav->jawaban8;
+			}
+				$average1=$jawaban1/$count;
+				$average2=$jawaban2/$count;
+				$average3=$jawaban3/$count;
+				$average4=$jawaban4/$count;
+				$average5=$jawaban5/$count;
+				$average6=$jawaban6/$count;
+				$average7=$jawaban7/$count;
+				$average8=$jawaban8/$count;
+	
+				$pdf->Cell(185,6,'NRR',1,0, 'C');
+				// $pdf->Cell(40,6,"",1,0, 'C');
+				// $pdf->Cell(40,6,$data->jenis_pendidikan,1,0, 'C');
+				// $pdf->Cell(30,6,$data->pekerjaan,1,0, 'C');
+				// $pdf->Cell(30,6,$jkl,1,0, 'C');
+				// $pdf->Cell(10,6,$data->umur,1,0, 'C');
+				// $pdf->Cell(25,6,$data->tanggal,1,0,'C');
+				$pdf->Cell(10,6,number_format( $average1,2),1,0,'C');
+				$pdf->Cell(10,6,number_format( $average2,2),1,0,'C');
+				$pdf->Cell(10,6,number_format( $average3,2),1,0,'C');
+				$pdf->Cell(10,6,number_format( $average4,2),1,0,'C');
+				$pdf->Cell(10,6,number_format( $average5,2),1,0,'C');
+				$pdf->Cell(10,6,number_format( $average6,2),1,0,'C');
+				$pdf->Cell(10,6,number_format( $average7,2),1,0,'C');
+				$pdf->Cell(10,6,number_format( $average8,2),1,1,'C');
+			
+				$pdf->Cell(185,6,'NRR Tertimbang',1,0, 'C');
+				// $pdf->Cell(40,6,"",1,0, 'C');
+				// $pdf->Cell(40,6,$data->jenis_pendidikan,1,0, 'C');
+				// $pdf->Cell(30,6,$data->pekerjaan,1,0, 'C');
+				// $pdf->Cell(30,6,$jkl,1,0, 'C');
+				// $pdf->Cell(10,6,$data->umur,1,0, 'C');
+				// $pdf->Cell(25,6,$data->tanggal,1,0,'C');
+				$pdf->Cell(10,6,number_format( ($average1=$average1*0.125),2),1,0,'C');
+				$pdf->Cell(10,6,number_format( ($average2=$average2*0.125),2),1,0,'C');
+				$pdf->Cell(10,6,number_format( ($average3=$average3*0.125),2),1,0,'C');
+				$pdf->Cell(10,6,number_format( ($average4=$average4*0.125),2),1,0,'C');
+				$pdf->Cell(10,6,number_format( ($average5=$average5*0.125),2),1,0,'C');
+				$pdf->Cell(10,6,number_format( ($average6=$average6*0.125),2),1,0,'C');
+				$pdf->Cell(10,6,number_format( ($average7=$average7*0.125),2),1,0,'C');
+				$pdf->Cell(10,6,number_format( ($average8=$average8*0.125),2),1,1,'C');
+
+			
+				$nrr=$average1+$average2+$average3+$average4+$average5+$average6+$average7+$average8;
+				
+				$pdf->Cell(185,6,'Jumlah NRR IKM tertimbang',1,0, 'C');
+				// $pdf->Cell(40,6,"",1,0, 'C');
+				// $pdf->Cell(40,6,$data->jenis_pendidikan,1,0, 'C');
+				// $pdf->Cell(30,6,$data->pekerjaan,1,0, 'C');
+				// $pdf->Cell(30,6,$jkl,1,0, 'C');
+				// $pdf->Cell(10,6,$data->umur,1,0, 'C');
+				// $pdf->Cell(25,6,$data->tanggal,1,0,'C');
+				// $pdf->Cell(10,6,number_format( ($average1=$average1*0.125),2),1,0,'C');
+				// $pdf->Cell(10,6,number_format( ($average2=$average2*0.125),2),1,0,'C');
+				// $pdf->Cell(10,6,number_format( ($average3=$average3*0.125),2),1,0,'C');
+				// $pdf->Cell(10,6,number_format( ($average4=$average4*0.125),2),1,0,'C');
+				// $pdf->Cell(10,6,number_format( ($average5=$average5*0.125),2),1,0,'C');
+				// $pdf->Cell(10,6,number_format( ($average6=$average6*0.125),2),1,0,'C');
+				// $pdf->Cell(10,6,number_format( ($average7=$average7*0.125),2),1,0,'C');
+				$pdf->Cell(80,6,number_format($nrr,2),1,1,'C');
+				
+				$pdf->Cell(185,6,'Nilai IKM (JML NRR IKM tertimbang *25)',1,0, 'C');
+				// $pdf->Cell(40,6,"",1,0, 'C');
+				// $pdf->Cell(40,6,$data->jenis_pendidikan,1,0, 'C');
+				// $pdf->Cell(30,6,$data->pekerjaan,1,0, 'C');
+				// $pdf->Cell(30,6,$jkl,1,0, 'C');
+				// $pdf->Cell(10,6,$data->umur,1,0, 'C');
+				// $pdf->Cell(25,6,$data->tanggal,1,0,'C');
+				// $pdf->Cell(10,6,number_format( ($average1=$average1*0.125),2),1,0,'C');
+				// $pdf->Cell(10,6,number_format( ($average2=$average2*0.125),2),1,0,'C');
+				// $pdf->Cell(10,6,number_format( ($average3=$average3*0.125),2),1,0,'C');
+				// $pdf->Cell(10,6,number_format( ($average4=$average4*0.125),2),1,0,'C');
+				// $pdf->Cell(10,6,number_format( ($average5=$average5*0.125),2),1,0,'C');
+				// $pdf->Cell(10,6,number_format( ($average6=$average6*0.125),2),1,0,'C');
+				// $pdf->Cell(10,6,number_format( ($average7=$average7*0.125),2),1,0,'C');
+				$pdf->Cell(80,6,number_format( ($nrr*25),2),1,1,'C');
+				
+			$pdf->Output('D','Laporan.pdf');
 		}
 	}
 
@@ -115,14 +261,160 @@ class Lurah extends CI_Controller {
 
 	public function export_laporan_pertahun()
 	{
-		$this->load->library('pdfgenerator');
 		$kategori = $_GET['kategori'];
 		$tahun = $_GET['tahun'];
 		if (isset($kategori) && isset($tahun)) {
-			$data['join_responden'] = $this->Lurah_model->join_responden_jawaban_user_tahun($kategori,$tahun)->result_array();
-			$data['jumlah'] = $this->Lurah_model->join_responden_jawaban_user_hitung_tahun($kategori,$tahun)->row_array();
-			$html = $this->load->view('lurah/export_pdf',$data,true);
-			$this->pdfgenerator->generate($html,'laporan');
+			$join_responden = $this->Lurah_model->join_responden_jawaban_user_tahun($kategori,$tahun)->result();
+			$hitung = $this->Lurah_model->join_responden_jawaban_user_hitung_tahun($kategori,$tahun)->row();
+			$this->load->library('Pdf'); // MEMANGGIL LIBRARY YANG KITA BUAT TADI
+			$kategori = $this->Admin_model->cek_kategori($kategori)->row();
+
+			error_reporting(0); // AGAR ERROR MASALAH VERSI PHP TIDAK MUNCUL
+	
+			$pdf = new FPDF('L', 'mm','Letter');
+	
+			$pdf->AddPage();
+			$pdf->Image('./assets/images/kabupaten_hulu.png',20,6,30);
+			$pdf->SetFont('Arial','B',16);
+			$pdf->Cell(10);
+			$pdf->Cell(0,7,'Indeks Kepuasan Masyarakat',0,1,'C');
+			$pdf->Cell(0,7,'Jln MT Haryono SH',0,1,'C');
+			$pdf->Ln(30);
+			
+			$pdf->Cell(0,7,'Survei',0,1,'C');
+			$pdf->Cell(0,7,$kategori->nama_kategori,0,1,'C');
+			$pdf->Cell(10,7,'',0,1);
+	
+
+			$pdf->SetFont('Arial','B',10);
+			$pdf->Cell(10,6,'No',1,0,'C');
+			$pdf->Cell(40,6,'Nama',1,0,'C');
+			$pdf->Cell(40,6,'Pendidikan',1,0,'C');
+			$pdf->Cell(30,6,'Pekerjaan',1,0,'C');
+			$pdf->Cell(30,6,'Jenis Kelamin',1,0,'C');
+			$pdf->Cell(10,6,'Umur',1,0,'C');
+			$pdf->Cell(25,6,'Waktu',1,0,'C');
+			$pdf->Cell(10,6,'RL-1',1,0,'C');
+			$pdf->Cell(10,6,'RL-2',1,0,'C');
+			$pdf->Cell(10,6,'RL-3',1,0,'C');
+			$pdf->Cell(10,6,'RL-4',1,0,'C');
+			$pdf->Cell(10,6,'RL-5',1,0,'C');
+			$pdf->Cell(10,6,'RL-6',1,0,'C');
+			$pdf->Cell(10,6,'RL-7',1,0,'C');
+			$pdf->Cell(10,6,'RL-8',1,1,'C');
+
+			$pdf->SetFont('Arial','',10);
+			// $resultse = $this->Admin_model->join_responden_jawaban_user($id);
+			// $hitung = $this->Admin_model->join_responden_jawaban_user_hitung($id)->row();
+			$no=0;
+			foreach ($join_responden as $data){
+				$no++;
+				$pdf->Cell(10,6,$no,1,0, 'C');
+				$pdf->Cell(40,6,$data->nama,1,0, 'C');
+				$pdf->Cell(40,6,$data->jenis_pendidikan,1,0, 'C');
+				$pdf->Cell(30,6,$data->pekerjaan,1,0, 'C');
+				$pdf->Cell(30,6,$data->jenis_kelamin,1,0, 'C');
+				$pdf->Cell(10,6,$data->umur,1,0, 'C');
+				$pdf->Cell(25,6,$data->tanggal,1,0,'C');
+				$pdf->Cell(10,6,$data->jawaban1,1,0,'C');
+				$pdf->Cell(10,6,$data->jawaban2,1,0,'C');
+				$pdf->Cell(10,6,$data->jawaban3,1,0,'C');
+				$pdf->Cell(10,6,$data->jawaban4,1,0,'C');
+				$pdf->Cell(10,6,$data->jawaban5,1,0,'C');
+				$pdf->Cell(10,6,$data->jawaban6,1,0,'C');
+				$pdf->Cell(10,6,$data->jawaban7,1,0,'C');
+				$pdf->Cell(10,6,$data->jawaban8,1,1,'C');
+			}
+			$count=$hitung->jumlah;
+
+			$jawaban1=0;$jawaban2=0;$jawaban3=0;$jawaban4=0;$jawaban5=0;$jawaban6=0;$jawaban7=0;$jawaban8=0;
+			foreach ($join_responden as $datav) {
+				$jawaban1=$jawaban1+$datav->jawaban1;
+				$jawaban2=$jawaban2+$datav->jawaban2;
+				$jawaban3=$jawaban3+$datav->jawaban3;
+				$jawaban4=$jawaban4+$datav->jawaban4;
+				$jawaban5=$jawaban5+$datav->jawaban5;
+				$jawaban6=$jawaban6+$datav->jawaban6;
+				$jawaban7=$jawaban7+$datav->jawaban7;
+				$jawaban8=$jawaban8+$datav->jawaban8;
+			}
+				$average1=$jawaban1/$count;
+				$average2=$jawaban2/$count;
+				$average3=$jawaban3/$count;
+				$average4=$jawaban4/$count;
+				$average5=$jawaban5/$count;
+				$average6=$jawaban6/$count;
+				$average7=$jawaban7/$count;
+				$average8=$jawaban8/$count;
+	
+				$pdf->Cell(185,6,'NRR',1,0, 'C');
+				// $pdf->Cell(40,6,"",1,0, 'C');
+				// $pdf->Cell(40,6,$data->jenis_pendidikan,1,0, 'C');
+				// $pdf->Cell(30,6,$data->pekerjaan,1,0, 'C');
+				// $pdf->Cell(30,6,$jkl,1,0, 'C');
+				// $pdf->Cell(10,6,$data->umur,1,0, 'C');
+				// $pdf->Cell(25,6,$data->tanggal,1,0,'C');
+				$pdf->Cell(10,6,number_format( $average1,2),1,0,'C');
+				$pdf->Cell(10,6,number_format( $average2,2),1,0,'C');
+				$pdf->Cell(10,6,number_format( $average3,2),1,0,'C');
+				$pdf->Cell(10,6,number_format( $average4,2),1,0,'C');
+				$pdf->Cell(10,6,number_format( $average5,2),1,0,'C');
+				$pdf->Cell(10,6,number_format( $average6,2),1,0,'C');
+				$pdf->Cell(10,6,number_format( $average7,2),1,0,'C');
+				$pdf->Cell(10,6,number_format( $average8,2),1,1,'C');
+			
+				$pdf->Cell(185,6,'NRR Tertimbang',1,0, 'C');
+				// $pdf->Cell(40,6,"",1,0, 'C');
+				// $pdf->Cell(40,6,$data->jenis_pendidikan,1,0, 'C');
+				// $pdf->Cell(30,6,$data->pekerjaan,1,0, 'C');
+				// $pdf->Cell(30,6,$jkl,1,0, 'C');
+				// $pdf->Cell(10,6,$data->umur,1,0, 'C');
+				// $pdf->Cell(25,6,$data->tanggal,1,0,'C');
+				$pdf->Cell(10,6,number_format( ($average1=$average1*0.125),2),1,0,'C');
+				$pdf->Cell(10,6,number_format( ($average2=$average2*0.125),2),1,0,'C');
+				$pdf->Cell(10,6,number_format( ($average3=$average3*0.125),2),1,0,'C');
+				$pdf->Cell(10,6,number_format( ($average4=$average4*0.125),2),1,0,'C');
+				$pdf->Cell(10,6,number_format( ($average5=$average5*0.125),2),1,0,'C');
+				$pdf->Cell(10,6,number_format( ($average6=$average6*0.125),2),1,0,'C');
+				$pdf->Cell(10,6,number_format( ($average7=$average7*0.125),2),1,0,'C');
+				$pdf->Cell(10,6,number_format( ($average8=$average8*0.125),2),1,1,'C');
+
+			
+				$nrr=$average1+$average2+$average3+$average4+$average5+$average6+$average7+$average8;
+				
+				$pdf->Cell(185,6,'Jumlah NRR IKM tertimbang',1,0, 'C');
+				// $pdf->Cell(40,6,"",1,0, 'C');
+				// $pdf->Cell(40,6,$data->jenis_pendidikan,1,0, 'C');
+				// $pdf->Cell(30,6,$data->pekerjaan,1,0, 'C');
+				// $pdf->Cell(30,6,$jkl,1,0, 'C');
+				// $pdf->Cell(10,6,$data->umur,1,0, 'C');
+				// $pdf->Cell(25,6,$data->tanggal,1,0,'C');
+				// $pdf->Cell(10,6,number_format( ($average1=$average1*0.125),2),1,0,'C');
+				// $pdf->Cell(10,6,number_format( ($average2=$average2*0.125),2),1,0,'C');
+				// $pdf->Cell(10,6,number_format( ($average3=$average3*0.125),2),1,0,'C');
+				// $pdf->Cell(10,6,number_format( ($average4=$average4*0.125),2),1,0,'C');
+				// $pdf->Cell(10,6,number_format( ($average5=$average5*0.125),2),1,0,'C');
+				// $pdf->Cell(10,6,number_format( ($average6=$average6*0.125),2),1,0,'C');
+				// $pdf->Cell(10,6,number_format( ($average7=$average7*0.125),2),1,0,'C');
+				$pdf->Cell(80,6,number_format($nrr,2),1,1,'C');
+				
+				$pdf->Cell(185,6,'Nilai IKM (JML NRR IKM tertimbang *25)',1,0, 'C');
+				// $pdf->Cell(40,6,"",1,0, 'C');
+				// $pdf->Cell(40,6,$data->jenis_pendidikan,1,0, 'C');
+				// $pdf->Cell(30,6,$data->pekerjaan,1,0, 'C');
+				// $pdf->Cell(30,6,$jkl,1,0, 'C');
+				// $pdf->Cell(10,6,$data->umur,1,0, 'C');
+				// $pdf->Cell(25,6,$data->tanggal,1,0,'C');
+				// $pdf->Cell(10,6,number_format( ($average1=$average1*0.125),2),1,0,'C');
+				// $pdf->Cell(10,6,number_format( ($average2=$average2*0.125),2),1,0,'C');
+				// $pdf->Cell(10,6,number_format( ($average3=$average3*0.125),2),1,0,'C');
+				// $pdf->Cell(10,6,number_format( ($average4=$average4*0.125),2),1,0,'C');
+				// $pdf->Cell(10,6,number_format( ($average5=$average5*0.125),2),1,0,'C');
+				// $pdf->Cell(10,6,number_format( ($average6=$average6*0.125),2),1,0,'C');
+				// $pdf->Cell(10,6,number_format( ($average7=$average7*0.125),2),1,0,'C');
+				$pdf->Cell(80,6,number_format( ($nrr*25),2),1,1,'C');
+				
+			$pdf->Output('D','Laporan.pdf');
 		}
 	}
 

@@ -94,19 +94,13 @@
                                                 <?php 
                                                 $no = 1;
                                                 foreach ($join_responden as $k) {?>
-                                                <?php 
-                                                if ($k->jenis_kelamin == 1) {
-                                                    $jkl = 'L';
-                                                } else {
-                                                    $jkl = 'P';
-                                                }
-                                                ?>
+                                                
                                                 <tr>
                                                     <td><center><?= $no++;?></center></td>
                                                     <td><?= $k->nama;?></td>
                                                     <td><center><?= $k->jenis_pendidikan;?></center></td>
                                                     <td><?= $k->pekerjaan;?></td>
-                                                    <td><center><?= $jkl;?></center></td>
+                                                    <td><center><?= $k->jenis_kelamin;?></center></td>
                                                     <td><center><?= $k->umur;?></center></td>
                                                     <td><center><?= $k->tanggal;?></center></td>
                                                     <td><center><?= $k->jawaban1;?></center></td>
@@ -121,9 +115,9 @@
                                                 <?php } ?>
                                                 <?php
                                                 $bulan = $_GET['bulan'];
-                                $queryj = $this->db->query("SELECT  COUNT(*) AS jumlah FROM responden join jawaban_user where responden.id_kategori='$kategori->id_kategori' AND MONTH(tanggal) = '$bulan'")->row();
+                                $queryj = $this->db->query("SELECT  COUNT(*) AS jumlah FROM responden inner join jawaban_user on responden.id_responden = jawaban_user.id_responden where responden.id_kategori='$kategori->id_kategori' AND MONTH(tanggal) = '$bulan'")->row();
                                 $count= $queryj->jumlah;
-                                $queryv =$this->db->query("SELECT * FROM responden join jawaban_user where responden.id_kategori='$kategori->id_kategori' AND MONTH(tanggal) = '$bulan'");
+                                $queryv =$this->db->query("SELECT * FROM responden inner join jawaban_user on responden.id_responden = jawaban_user.id_responden where responden.id_kategori='$kategori->id_kategori' AND MONTH(tanggal) = '$bulan'");
 
                                 $jawaban1=0;$jawaban2=0;$jawaban3=0;$jawaban4=0;$jawaban5=0;$jawaban6=0;$jawaban7=0;$jawaban8=0;
                                 // while ( $datav = mysqli_fetch_array($queryv) ) {
@@ -230,7 +224,7 @@
                                             <?php
                                             $no = 1;
 
-                                            $query = $this->db->query("SELECT * FROM responden join jawaban_user where responden.id_kategori='$kategori->id_kategori'  AND MONTH(tanggal) = '$bulan'")->result();
+                                            $query = $this->db->query("SELECT * FROM responden inner join jawaban_user on responden.id_responden = jawaban_user.id_responden where responden.id_kategori='$kategori->id_kategori'  AND MONTH(tanggal) = '$bulan'")->result();
                                             foreach ($query as $k) {
                                             ?>
                                             <tr>
