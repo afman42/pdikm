@@ -96,15 +96,22 @@ class Lurah extends CI_Controller {
 
 			error_reporting(0); // AGAR ERROR MASALAH VERSI PHP TIDAK MUNCUL
 	
-			$pdf = new FPDF('L', 'mm','Letter');
-	
+			$pdf = new FPDF('L', 'mm','A4');
+ 
 			$pdf->AddPage();
 			$pdf->Image('./assets/images/kabupaten_hulu.png',20,6,30);
 			$pdf->SetFont('Arial','B',16);
 			$pdf->Cell(10);
-			$pdf->Cell(0,7,'Indeks Kepuasan Masyarakat',0,1,'C');
-			$pdf->Cell(0,7,'Jln MT Haryono SH',0,1,'C');
-			$pdf->Ln(30);
+			$pdf->Cell(0,7,'',0,1,'C');
+			$pdf->Cell(0,7,'PEMERINTAH KABUPATEN KAPUAS HULU',0,1,'C');
+			$pdf->Cell(280,7,'KECAMATAN PUTUSSIBAU SELATAN',0,1,'C');
+			$pdf->SetFont('Arial','B',20);
+			$pdf->Cell(0,7,'KANTOR KELURAHAN KEDAMIN HILIR',0,1,'C');
+			$pdf->SetFont('Arial','B',12);
+			$pdf->Cell(0,7,'Jalan Budaya No. 01 Kode Pos 78714',0,1,'C');
+			$pdf->Cell(0,7,'KEDAMIN HILIR',0,1,'C');
+			$pdf->Line(10, 55, 290, 55);
+			$pdf->Ln(15);
 			
 			$pdf->Cell(0,7,'Survei',0,1,'C');
 			$pdf->Cell(0,7,$kategori->nama_kategori,0,1,'C');
@@ -271,15 +278,22 @@ class Lurah extends CI_Controller {
 
 			error_reporting(0); // AGAR ERROR MASALAH VERSI PHP TIDAK MUNCUL
 	
-			$pdf = new FPDF('L', 'mm','Letter');
-	
+			$pdf = new FPDF('L', 'mm','A4');
+ 
 			$pdf->AddPage();
 			$pdf->Image('./assets/images/kabupaten_hulu.png',20,6,30);
 			$pdf->SetFont('Arial','B',16);
 			$pdf->Cell(10);
-			$pdf->Cell(0,7,'Indeks Kepuasan Masyarakat',0,1,'C');
-			$pdf->Cell(0,7,'Jln MT Haryono SH',0,1,'C');
-			$pdf->Ln(30);
+			$pdf->Cell(0,7,'',0,1,'C');
+			$pdf->Cell(0,7,'PEMERINTAH KABUPATEN KAPUAS HULU',0,1,'C');
+			$pdf->Cell(280,7,'KECAMATAN PUTUSSIBAU SELATAN',0,1,'C');
+			$pdf->SetFont('Arial','B',20);
+			$pdf->Cell(0,7,'KANTOR KELURAHAN KEDAMIN HILIR',0,1,'C');
+			$pdf->SetFont('Arial','B',12);
+			$pdf->Cell(0,7,'Jalan Budaya No. 01 Kode Pos 78714',0,1,'C');
+			$pdf->Cell(0,7,'KEDAMIN HILIR',0,1,'C');
+			$pdf->Line(10, 55, 290, 55);
+			$pdf->Ln(15);
 			
 			$pdf->Cell(0,7,'Survei',0,1,'C');
 			$pdf->Cell(0,7,$kategori->nama_kategori,0,1,'C');
