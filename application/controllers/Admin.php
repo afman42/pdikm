@@ -8,7 +8,7 @@ class Admin extends CI_Controller
 	{
 		parent::__construct();
 		$this->load->model('Admin_model');
-		if ($_SESSION['login'] != TRUE) {
+		if ($this->session->userdata('login') != TRUE) {
 			$this->session->set_flashdata('error', 'Harus Login Terlebih Dahulu');
 			redirect(site_url('auth/index'));
 		}

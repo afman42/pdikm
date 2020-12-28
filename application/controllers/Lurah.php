@@ -9,7 +9,7 @@ class Lurah extends CI_Controller {
 		$this->load->model('Lurah_model');
 		$this->load->model('Admin_model');
 		$this->load->model('Soal_model');
-		if ($_SESSION['login'] != TRUE) {
+		if ($this->session->userdata('login') != TRUE) {
 			$this->session->set_flashdata('error','Harus Login Terlebih Dahulu');
 			redirect(site_url('auth/index'));
 		}
