@@ -21,9 +21,9 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="<?= site_url('lurah/ubah_password');?>">
+                                <a href="<?= site_url('lurah/ubah_biodata');?>">
                                     <i data-feather="lock"></i>
-                                    <span> Ubah Password </span>
+                                    <span> Ubah Biodata </span>
                                 </a>
                             </li>
                             <li>

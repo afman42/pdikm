@@ -90,12 +90,12 @@
                     <?php }?>
                     <?php if ($_SESSION['level'] == 'admin') {?>
                         <div class="media-body">
-                            <h6 class="pro-user-name mt-0 mb-0">Admin</h6>
+                            <h6 class="pro-user-name mt-0 mb-0"><?= $user->nama;?></h6>
                             <span class="pro-user-desc">Administrator</span>
                         </div>
                     <?php } else { ?>
                         <div class="media-body">
-                            <h6 class="pro-user-name mt-0 mb-0">Pak Lurah</h6>
+                            <h6 class="pro-user-name mt-0 mb-0"><?= $user->nama;?></h6>
                             <span class="pro-user-desc">Kepala Lurah</span>
                         </div>
                     <?php } ?>
