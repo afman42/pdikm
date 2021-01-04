@@ -34,13 +34,18 @@
 <script src="<?= base_url()  ?>assets/lte/dist/js/demo.js"></script>
 
 <!-- OPTIONAL SCRIPTS -->
-<script src="plugins/chart.js/Chart.min.js"></script>
+<!-- ChartJS -->
+<script src="<?= base_url()  ?>assets/lte/plugins/chart.js/Chart.min.js"></script>
+
+
+
 <script>
     function peringatan()
     {
         alert("Data berhasil disimpan.");
     }
 </script>
+
 </body>
 
 </html>

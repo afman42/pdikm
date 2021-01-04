@@ -7,4 +7,11 @@ class Jawaban_model extends CI_Model
     {
         return $this->db->insert('jawaban_user', $data);
     }
+    function tampil_data($id)
+	{
+        
+        $this->db->order_by('id_jawaban_user', 'DESCENDING');
+        $this->db->where('id_kategori', $id);
+		return $this->db->get('v_hasil')->result();
+	}
 }

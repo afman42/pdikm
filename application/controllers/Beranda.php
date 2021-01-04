@@ -113,4 +113,15 @@ class Beranda extends CI_Controller {
         $this->Jawaban_model->simpan_data($data);
         redirect(site_url('beranda/finish'));
     }
+
+    public function hasil($id)
+    {
+        $data = array(
+            'jawaban' => $this->Jawaban_model->tampil_data($id)
+        );
+        $this->load->view('front/header');
+        $this->load->view('front/navbar');
+        $this->load->view('front/hasil', $data);
+        $this->load->view('front/footer');
+    }
 }
