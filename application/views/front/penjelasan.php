@@ -44,7 +44,11 @@
                 <!-- /.card-body -->
             </div>
             <div class="text-center">
-                <a href="<?= site_url('beranda/responden/'.$id_kategori) ?>" class="btn btn-primary">Lanjut</a>
+                <?php if ($this->session->login != TRUE): ?>
+                    <a href="<?= site_url('beranda/responden/'.$id_kategori) ?>" class="btn btn-primary">Lanjut</a>
+                <?php else: ?>
+                    <a href="<?= site_url('beranda/login_masyarakat') ?>" class="btn btn-primary">Lanjut</a>
+                <?php endif ?>
             </div>
 
         </div>

@@ -42,58 +42,58 @@ class Lurah_model extends CI_Model {
     public function join_responden_jawaban_user($kategori,$bulan)
     {
         $this->db->select('*');
-        $this->db->from('responden');
-        $this->db->where('responden.id_kategori',$kategori);
-        $this->db->where('MONTH(responden.tanggal)',$bulan);
-        $this->db->join('jawaban_user', 'responden.id_responden = jawaban_user.id_responden');
-        $this->db->order_by('jawaban_user.id_responden', 'DESC');
+        $this->db->from('masyarakat');
+        $this->db->where('masyarakat.id_kategori',$kategori);
+        $this->db->where('MONTH(masyarakat.tanggal)',$bulan);
+        $this->db->join('jawaban_user', 'masyarakat.id_masyarakat = jawaban_user.id_masyarakat');
+        $this->db->order_by('jawaban_user.id_masyarakat', 'DESC');
         return $this->db->get();
     }
 
     public function join_responden_jawaban_user_hitung($id,$bulan)
     {
         $this->db->select('COUNT(*) AS jumlah');
-        $this->db->from('responden');
-        $this->db->where('responden.id_kategori',$id);
-        $this->db->where('MONTH(responden.tanggal)',$bulan);
-        $this->db->join('jawaban_user', 'responden.id_responden = jawaban_user.id_responden');
-        $this->db->order_by('jawaban_user.id_responden', 'DESC');
+        $this->db->from('masyarakat');
+        $this->db->where('masyarakat.id_kategori',$id);
+        $this->db->where('MONTH(masyarakat.tanggal)',$bulan);
+        $this->db->join('jawaban_user', 'masyarakat.id_masyarakat = jawaban_user.id_masyarakat');
+        $this->db->order_by('jawaban_user.id_masyarakat', 'DESC');
         return $this->db->get();
     }
 
     public function cek_hitung_responden($id,$bulan)
     {
         $this->db->where('id_kategori',$id);
-        $this->db->where('MONTH(responden.tanggal)',$bulan);
-        return $this->db->get('responden');
+        $this->db->where('MONTH(masyarakat.tanggal)',$bulan);
+        return $this->db->get('masyarakat');
     }
 
     public function join_responden_jawaban_user_tahun($kategori,$tahun)
     {
         $this->db->select('*');
-        $this->db->from('responden');
-        $this->db->where('responden.id_kategori',$kategori);
-        $this->db->where('YEAR(responden.tanggal)',$tahun);
-        $this->db->join('jawaban_user', 'responden.id_responden = jawaban_user.id_responden');
-        $this->db->order_by('jawaban_user.id_responden', 'DESC');
+        $this->db->from('masyarakat');
+        $this->db->where('masyarakat.id_kategori',$kategori);
+        $this->db->where('YEAR(masyarakat.tanggal)',$tahun);
+        $this->db->join('jawaban_user', 'masyarakat.id_masyarakat = jawaban_user.id_masyarakat');
+        $this->db->order_by('jawaban_user.id_masyarakat', 'DESC');
         return $this->db->get();
     }
 
     public function join_responden_jawaban_user_hitung_tahun($id,$tahun)
     {
         $this->db->select('COUNT(*) AS jumlah');
-        $this->db->from('responden');
-        $this->db->where('responden.id_kategori',$id);
-        $this->db->where('YEAR(responden.tanggal)',$tahun);
-        $this->db->join('jawaban_user', 'responden.id_responden = jawaban_user.id_responden');
-        $this->db->order_by('jawaban_user.id_responden', 'DESC');
+        $this->db->from('masyarakat');
+        $this->db->where('masyarakat.id_kategori',$id);
+        $this->db->where('YEAR(masyarakat.tanggal)',$tahun);
+        $this->db->join('jawaban_user', 'masyarakat.id_masyarakat = jawaban_user.id_masyarakat');
+        $this->db->order_by('jawaban_user.id_masyarakat', 'DESC');
         return $this->db->get();
     }
 
     public function cek_hitung_responden_tahun($id,$tahun)
     {
         $this->db->where('id_kategori',$id);
-        $this->db->where('YEAR(responden.tanggal)',$tahun);
-        return $this->db->get('responden');
+        $this->db->where('YEAR(masyarakat.tanggal)',$tahun);
+        return $this->db->get('masyarakat');
     }
 }

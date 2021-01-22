@@ -30,14 +30,21 @@ class Auth extends CI_Controller {
 		if ($model->num_rows() > 0) {
 			$tampil = $model->row();
 			if ($tampil->level == 'admin') {
-				$_SESSION['id_user'] = $tampil->id_user;
-				$_SESSION['level'] = $tampil->level;
-				$_SESSION['login'] = TRUE;
+				$data = [
+					'id_user' => $tampil->id_user,
+					'level' => $tampil->level,
+					'id_admin' => $tampil->id_admin,
+					'login' => TRUE
+				];
+				$this->session->set_userdata($data);
 				redirect(site_url('admin/index'));
 			}else {
-				$_SESSION['id_user'] = $tampil->id_user;
-				$_SESSION['level'] = $tampil->level;
-				$_SESSION['login'] = TRUE;
+				$data = [
+					'id_user' => $tampil->id_user,
+					'level' => $tampil->level,
+					'login' => TRUE
+				];
+				$this->session->set_userdata($data);
 				redirect(site_url('lurah/index'));
 			}
 		}else{

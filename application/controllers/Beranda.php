@@ -15,6 +15,7 @@ class Beranda extends CI_Controller {
 			redirect(site_url('auth/index'));
 		} */
 	}
+    
 	public function index()
 	{
         $data = array(
@@ -26,36 +27,104 @@ class Beranda extends CI_Controller {
         $this->load->view('front/footer');
         
     }
-    public function penjelasan($id)
-    {
+    public function penjelasan($id = NULL)
+    { 
+        if (empty($id)) {
+            redirect(site_url('beranda/index'));
+        }
         $row = $this->Admin_model->cek_kategori($id)->row();
-        if($row)
-        {
+        $this->session->set_userdata('id_penjelasan',$id);
+        if($row != null){
             $data = array(
                 'id_kategori' => set_value('id_kategori', $row->id_kategori),
                 'persyaratan' => set_value('persyaratan', $row->persyaratan)
             );
+            $this->load->view('front/header');
+            $this->load->view('front/navbar');
+            $this->load->view('front/penjelasan',$data);
+            $this->load->view('front/footer');
         }
-        $this->load->view('front/header');
-        $this->load->view('front/navbar');
-        $this->load->view('front/penjelasan',$data);
-        $this->load->view('front/footer');
     }
-    public function responden($id)
+
+    public function login_masyarakat()
     {
-        $row = $this->Admin_model->cek_kategori($id)->row();
-        if($row)
+        $this->form_validation->set_rules('username', 'Username', 'required|trim|htmlspecialchars',
+            ['required' => "Username Harus Diisi"]
+        );
+        $this->form_validation->set_rules('password', 'Password', 'required|trim|htmlspecialchars',
+            ['required' => "Password Harus Diisi"]
+        );
+        if ($this->form_validation->run() == FALSE)
         {
-            $data = array(
-                'id_kategori' => set_value('id_kategori', $row->id_kategori),
-                'auto_kode' => $this->Responden_model->kode_otomatis()
-            );
+            $this->load->view('front/login_masyarakat');
+        }else{   
+        
+            if($this->cek_login() == TRUE){
+                
+                $this->home();
+            }
+            else{
+              $this->session->set_flashdata('error','Harap diisi Email dan password dengan benar');
+              redirect(site_url('beranda/login_masyarakat'));
+            }
         }
-        $this->load->view('front/header');
-        $this->load->view('front/navbar');
-        $this->load->view('front/responden',$data);
-        $this->load->view('front/footer');
     }
+
+    protected function cek_login()
+    {
+        $this->load->model('Auth_model','model');
+        $username    = $this->input->post('username',TRUE);
+        $password = $this->input->post('password',TRUE);
+        // $password_encrypt = md5($password);
+        
+        $query = $this->model->login($username,$password);
+
+        if( $query->num_rows() > 0 )
+        {
+            $row = $query->row(1);
+            if($row->level == 'masyarakat' ){
+                $data = array(
+                    'username'   => $row->username,
+                    'level'   => $row->level,
+                    'login'   => TRUE,
+                    'id_masyarakat' => $row->id_masyarakat
+                );
+            }
+            
+            $this->session->set_userdata($data);
+            return TRUE;
+        }
+        else{
+            return FALSE;
+        }
+    }
+
+    public function home()
+    {
+        $data['level'] = $this->session->userdata('level');
+        $data['email'] = $this->session->userdata('email');
+        if($data['level'] == 'masyarakat'){
+            redirect(site_url('beranda/penjelasan/'.$this->session->id_penjelasan
+        ));
+        }
+    }
+    // public function responden($id)
+    // {
+    //     $row = $this->Admin_model->cek_kategori($id)->row();
+    //     if($row)
+    //     {
+    //         $data = array(
+    //             'id_kategori' => set_value('id_kategori', $row->id_kategori),
+    //             'auto_kode' => $this->Responden_model->kode_otomatis()
+    //         );
+    //     }
+    //     $this->load->view('front/header');
+    //     $this->load->view('front/navbar');
+    //     $this->load->view('front/responden');
+    //     $this->load->view('front/responden',$data);
+    //     $this->load->view('front/footer');
+    // }
+
     public function question()
     {
         $id= $this->uri->segment(3);

@@ -5,11 +5,11 @@ class Responden_model extends CI_Model
 {
     public function simpan_data($data)
     {
-        return $this->db->insert('responden', $data);
+        return $this->db->insert('masyarakat', $data);
     }
     function kode_otomatis()
 	   {
-		   $query = $this->db->query("SELECT MAX(RIGHT(id_responden,2)) AS responden FROM responden");
+		   $query = $this->db->query("SELECT MAX(RIGHT(id_masyarakat,2)) AS responden FROM responden");
 		   if($query->num_rows()>0)
 		   {
 			   foreach($query->result() as $num)

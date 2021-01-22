@@ -9,6 +9,12 @@
                                 </a>
                             </li>
                             <li>
+                                <a href="<?= site_url('admin/akun_masyarakat');?>">
+                                    <i data-feather="users"></i>
+                                    <span> Akun Masyarakat </span>
+                                </a>
+                            </li>
+                            <li>
                                 <a href="<?= site_url('admin/laporan');?>">
                                     <i data-feather="file"></i>
                                     <span> Laporan </span>

@@ -19,29 +19,68 @@ class Admin extends CI_Controller
 		redirect(site_url('admin/kategori'));
 	}
 
+	//Akun Masyarakat
+	public function akun_masyarakat()
+	{
+		$data['judul'] = 'IKM - Akun Masyarakat';
+		$data['masyarakat'] = $this->Admin_model->akun_masyarakat()->result();
+		$this->load->view('template/header',$data);
+		$this->load->view('admin/akun_masyarakat', $data);
+		$this->load->view('template/footer');
+	}
+
+	public function cek_akun_masyarakat($id = NULL)
+	{
+		if (empty($id)) {
+            redirect(site_url('admin/akun_masyarakat'));
+        }
+		$data['judul'] = 'IKM - Cek Akun Masyarakat';
+		$data['masyarakat'] = $this->Admin_model->cek_akun_masyarakat($id)->row(1);
+		$this->load->view('template/header',$data);
+		$this->load->view('admin/cek_akun_masyarakat', $data);
+		$this->load->view('template/footer',$data);
+	}
+
+	public function hapus_akun_masyarakat($id = NULL)
+	{
+		$cek_masyarakat = $this->db->get_where('masyarakat',['id_masyarakat' => $id])->row();
+		$cek_user = $this->db->get_where('users',['id_masyarakat' => $id])->row();
+		if ($cek_masyarakat && $cek_user) {
+			unlink($cek_masyarakat->foto_ktp);
+			unlink($cek_user->foto);
+			$this->Admin_model->hapus_masyarakat($id);
+			echo "<script>alert('Akun Berhasil Dihapus');window.location.href='".site_url('admin/akun_masyarakat')."'</script>";
+		}
+	}
+
 	//Kategori
 	public function kategori()
 	{
-		$data['kategori'] = $this->Admin_model->kategori()->result();
-		$this->load->view('template/header');
+		$data['judul'] = 'IKM - Kategori';
+		$data['kategori'] = $this->Admin_model->kategori($this->session->id_admin)->result();
+		$this->load->view('template/header',$data);
 		$this->load->view('admin/index', $data);
 		$this->load->view('template/footer');
 	}
 
 	public function tambah_kategori()
 	{
-		$this->load->view('template/header');
+		$data['judul'] = 'IKM - Tambah Kategori';
+		$this->load->view('template/header',$data);
 		$this->load->view('admin/tambah_kategori');
 		$this->load->view('template/footer');
 	}
 
 	public function cek_tambah_kategori()
 	{
+		$this->load->model('Admin_model');
 		$nama = $this->input->post('nama', TRUE);
 		$penjelasan = $this->input->post('penjelasan', TRUE);
+		$cek_admin = $this->Admin_model->get_admin_by_id($this->session->id_user)->row();
 		$data = [
 			'nama_kategori' => $nama,
-			'persyaratan' => $penjelasan
+			'persyaratan' => $penjelasan,
+			'id_admin' => $cek_admin->id_admin
 		];
 		$model = $this->Admin_model->tambah_kategori($data);
 		if ($model) {
@@ -53,8 +92,9 @@ class Admin extends CI_Controller
 
 	public function edit_kategori($id)
 	{
+		$data['judul'] = 'IKM - Edit Kategori';		
 		$data['kategori'] = $this->Admin_model->cek_kategori($id)->row();
-		$this->load->view('template/header');
+		$this->load->view('template/header',$data);
 		$this->load->view('admin/edit_kategori', $data);
 		$this->load->view('template/footer');
 	}
@@ -86,17 +126,19 @@ class Admin extends CI_Controller
 
 	public function soal_kategori($id)
 	{
+		$data['judul'] = 'IKM - Soal Kategori';
 		$data['soal_kategori'] = $this->Admin_model->soal_kategori($id)->result();
 		$data['kategori'] = $this->Admin_model->cek_kategori($id)->row();
-		$this->load->view('template/header');
+		$this->load->view('template/header',$data);
 		$this->load->view('admin/soal_kategori', $data);
 		$this->load->view('template/footer');
 	}
 
 	public function tambah_soal_kategori($id)
 	{
+		$data['judul'] = 'IKM - Tambah Soal Kategori';
 		$data['kategori'] = $this->Admin_model->cek_kategori($id)->row();
-		$this->load->view('template/header');
+		$this->load->view('template/header',$data);
 		$this->load->view('admin/tambah_soal_kategori', $data);
 		$this->load->view('template/footer');
 	}
@@ -131,9 +173,10 @@ class Admin extends CI_Controller
 
 	public function edit_soal_kategori($id)
 	{
+		$data['judul'] = 'IKM - Edit Soal Kategori';
 		$data['soal'] = $this->Admin_model->cek_soal($id)->row(1);
 		$data['jawaban'] = $this->Admin_model->cek_jawaban_soal($id)->row(1);
-		$this->load->view('template/header');
+		$this->load->view('template/header',$data);
 		$this->load->view('admin/edit_soal_kategori', $data);
 		$this->load->view('template/footer');
 	}
@@ -179,6 +222,7 @@ class Admin extends CI_Controller
 
 	public function ubah_biodata()
 	{
+		$data['judul'] = 'IKM - Ubah Biodata';
 		$this->form_validation->set_rules('nama', 'Nama', 'required', [
 			'required' => "Nama kosong, Silakan Diisi"
 		]);
@@ -259,18 +303,20 @@ class Admin extends CI_Controller
 
 	public function laporan()
 	{
-		$data['kategori'] = $this->Admin_model->kategori()->result();
-		$this->load->view('template/header');
+		$data['judul'] = 'IKM - Laporan';
+		$data['kategori'] = $this->Admin_model->kategori($this->session->id_admin)->result();
+		$this->load->view('template/header',$data);
 		$this->load->view('admin/laporan', $data);
 		$this->load->view('template/footer');
 	}
 
 	public function cek_laporan($id)
 	{
+		$data['judul'] = 'IKM - Cek Laporan';
 		$data['kategori'] = $this->Admin_model->cek_kategori($id)->row();
 		$data['responden'] = $this->Admin_model->cek_hitung_responden($id);
 		$data['join_responden'] = $this->Admin_model->join_responden_jawaban_user($id)->result();
-		$this->load->view('template/header');
+		$this->load->view('template/header',$data);
 		$this->load->view('admin/cek_laporan', $data);
 		$this->load->view('template/footer');
 	}

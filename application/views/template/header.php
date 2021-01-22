@@ -5,7 +5,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8" />
-        <title>Shreyu - Admin & Dashboard Template</title>
+        <title><?= $judul; ?></title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta content="A fully featured admin theme which can be used to build CRM, CMS, etc." name="description" />
         <meta content="Coderthemes" name="author" />
@@ -16,7 +16,13 @@
 
         <!-- plugins -->
         <?php
-        if ($uri == 'kategori' || $uri == 'soal_kategori' || $uri = 'laporan' || $uri == 'non_aktif_kategori' || $uri == 'aktif_kategori') {
+        if ($uri == 'cek_akun_masyarakat') {
+        ?>
+        <link href="<?= base_url(); ?>assets/lightbox/dist/css/lightbox.css" rel="stylesheet" type="text/css" />
+        <?php } ?>
+
+        <?php
+        if ($uri == 'kategori' || $uri == 'soal_kategori' || $uri = 'laporan' || $uri == 'non_aktif_kategori' || $uri == 'aktif_kategori' || $uri == 'akun_masyarakat') {
         ?>
         <link href="<?= base_url(); ?>assets/shreyu/libs/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
         <link href="<?= base_url(); ?>assets/shreyu/libs/datatables/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />

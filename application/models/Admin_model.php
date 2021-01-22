@@ -3,10 +3,42 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class Admin_model extends CI_Model
 {
-
-    public function kategori()
+    public function akun_masyarakat()
     {
-        return $this->db->get('kategori');
+        $this->db->select('*');
+        $this->db->from('masyarakat');
+        $this->db->join('users', 'users.id_masyarakat = masyarakat.id_masyarakat');
+        return $this->db->get();
+    }
+
+    public function cek_akun_masyarakat($id_masyarakat)
+    {
+        $this->db->select('*');
+        $this->db->from('masyarakat');
+        $this->db->join('users', 'users.id_masyarakat = masyarakat.id_masyarakat');
+        $this->db->where('users.id_masyarakat', $id_masyarakat);
+        return $this->db->get();
+    }
+
+    public function hapus_masyarakat($id_masyarakat)
+    {
+        $this->db->where('id_masyarakat',$id_masyarakat);
+        $this->db->delete('masyarakat');
+
+        $this->db->where('id_masyarakat',$id_masyarakat);
+        $this->db->delete('users');
+
+        // $this->db->where('id_masyarakat',$id_masyarakat);
+        // $this->db->delete('jawaban_user');
+    }
+
+    public function kategori($id_admin)
+    {
+        $this->db->select('*');
+        $this->db->from('kategori');
+        $this->db->join('users', 'users.id_admin = kategori.id_admin');
+        $this->db->where('users.id_admin', $id_admin);
+        return $this->db->get();
     }
 
     public function tampil_data_aktif()
@@ -114,26 +146,31 @@ class Admin_model extends CI_Model
     public function cek_hitung_responden($id)
     {
         $this->db->where('id_kategori', $id);
-        return $this->db->get('responden');
+        return $this->db->get('masyarakat');
     }
 
     public function join_responden_jawaban_user($id)
     {
         $this->db->select('*');
-        $this->db->from('responden');
-        $this->db->where('responden.id_kategori', $id);
-        $this->db->join('jawaban_user', 'responden.id_responden = jawaban_user.id_responden');
-        $this->db->order_by('jawaban_user.id_responden', 'DESC');
+        $this->db->from('masyarakat');
+        $this->db->where('masyarakat.id_kategori', $id);
+        $this->db->join('jawaban_user', 'masyarakat.id_masyarakat = jawaban_user.id_masyarakat');
+        $this->db->order_by('jawaban_user.id_masyarakat', 'DESC');
         return $this->db->get();
     }
 
     public function join_responden_jawaban_user_hitung($id)
     {
         $this->db->select('COUNT(*) AS jumlah');
-        $this->db->from('responden');
-        $this->db->where('responden.id_kategori', $id);
-        $this->db->join('jawaban_user', 'responden.id_responden = jawaban_user.id_responden');
-        $this->db->order_by('jawaban_user.id_responden', 'DESC');
+        $this->db->from('masyarakat');
+        $this->db->where('masyarakat.id_kategori', $id);
+        $this->db->join('jawaban_user', 'masyarakat.id_masyarakat = jawaban_user.id_masyarakat');
+        $this->db->order_by('jawaban_user.id_masyarakat', 'DESC');
         return $this->db->get();
+    }
+
+    public function get_admin_by_id($id)
+    {
+        return $this->db->get_where('users',['id_user' => $id]);
     }
 }

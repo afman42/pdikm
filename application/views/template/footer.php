@@ -12,8 +12,34 @@
 
             </div>
 </div>
+        <?php
+        $uri = $this->uri->segment(2);
+        if ($uri == 'cek_akun_masyarakat') {
+        ?>
         <!-- END wrapper -->
+        <div class="modal fade" id="ajaxHapus" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-sm" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modelHeading">Hapus Akun <?= $masyarakat->nama;?></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        </button>
+                    </div>
+                    <div class="modal-body" id="yakinHapus">
+                        <form action="<?= site_url('admin/hapus_akun_masyarakat/'.$masyarakat->id_masyarakat); ?>" method="POST">
 
+                            <input type="hidden" id="id_hapus_masyarakat" value="<?= $masyarakat->id_masyarakat;?>">
+                        <p>Yakin Mau Menghapus Ini !</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                        <button type="submit" class="btn btn-primary" id="hapus_button">Hapus</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <?php } ?> 
         <!-- Right Sidebar -->
         <div class="right-bar">
             <div class="rightbar-title">
@@ -55,10 +81,51 @@
         <div class="rightbar-overlay"></div>
         <!-- Vendor js -->
         <script src="<?= base_url(); ?>assets/shreyu/js/vendor.min.js"></script>
-        
         <?php
         $uri = $this->uri->segment(2);
-        if ($uri == 'kategori' || $uri == 'soal_kategori' || $uri == 'laporan' || $uri == 'non_aktif_kategori' || $uri == 'aktif_kategori') {
+        if ($uri == 'cek_akun_masyarakat') {
+        ?>
+        <script src="<?= base_url(); ?>assets/lightbox/dist/js/lightbox.min.js"></script>
+        <script type="text/javascript">
+        $(function() {
+            $(document).on('click', '.hapus_button', function() {
+            // product_id = $(this).data("id");
+                // $.get("{{ url('admin/getberita') }}" + '/' + product_id, function(data) {
+                //     $('#yakinHapus').text('Yakin Menghapus Atas Judul ' + data.judul + ' ?')
+                // })
+                $('#ajaxHapus').modal('show');
+            });
+
+
+            // $('#hapus_button').click(function() {
+            //     $.ajax({
+            //         url: "<?= site_url('hapus_akun_masyarakat/');?>",
+            //         method: "POST",
+            //         success: function(data) {
+            //             var toast = "";
+            //             setTimeout(function() {
+            //                 $('#hapus_button').text('Menghapus...');
+            //                 $('#ajaxHapus').modal('hide');
+            //                 location.href ="<?= site_url('admin/akun_masyarakat');?>"
+            //             }, 500);
+
+            //             // if (data.error) {
+            //             //     toast = toastr.error("Data tidak dapat dihapus");
+            //             // }
+
+            //             // if (data.success) {
+            //             //     toast = toastr.success(data.success);
+            //             // }
+            //         }
+            //     })
+            // });
+        })
+        </script>
+        <?php } ?>
+
+        <?php
+        
+        if ($uri == 'kategori' || $uri == 'soal_kategori' || $uri == 'laporan' || $uri == 'non_aktif_kategori' || $uri == 'aktif_kategori' || $uri == 'akun_masyarakat') {
         ?>
         <script src="<?= base_url(); ?>assets/shreyu/libs/datatables/jquery.dataTables.min.js"></script>
         <script src="<?= base_url(); ?>assets/shreyu/libs/datatables/dataTables.bootstrap4.min.js"></script>
@@ -84,6 +151,13 @@
         <script src="<?= base_url(); ?>assets/shreyu/tinymce/tinymce.min.js"></script>
 
         <script>
+        lightbox.option({
+          'resizeDuration': 200,
+          'wrapAround': true
+          })
+        </script>
+        <script>
+
         $(document).ready(function () {
             tinymce.init({
                 selector: '#post-content',

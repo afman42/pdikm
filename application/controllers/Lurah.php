@@ -17,54 +17,59 @@ class Lurah extends CI_Controller {
 
 	public function index()
 	{
+		$data['judul'] = 'IKM - Beranda';
 		$data['kategori_aktif'] = $this->Lurah_model->kategori_online()->result();
 		$data['kategori_non'] = $this->Lurah_model->kategori_offline()->result();
-		$this->load->view('template/header');
+		$this->load->view('template/header',$data);
 		$this->load->view('lurah/index',$data);
 		$this->load->view('template/footer');
 	}
 
-	public function cek_kategori($id)
-	{
-		$data = array(
-            'soal' => $this->Soal_model->tampil_data(),
-            'start' => 1,
-			'start_soal' => 1,
-			'kategori' => $this->Lurah_model->cek_kategori($id)->row()
-        );
-		$this->load->view('template/header');
-		$this->load->view('lurah/cek_kategori',$data);
-		$this->load->view('template/footer');
-	}
+	// public function cek_kategori($id)
+	// {
+	// 	$data = array(
+ //            'soal' => $this->Soal_model->tampil_data(),
+ //            'start' => 1,
+	// 		'start_soal' => 1,
+	// 		'kategori' => $this->Lurah_model->cek_kategori($id)->row()
+ //        );
+	// 	$this->load->view('template/header',$data);
+	// 	$this->load->view('lurah/cek_kategori',$data);
+	// 	$this->load->view('template/footer');
+	// }
 
 	public function aktif_kategori()
 	{
+		$data['judul'] = 'IKM - Aktif Kategori';
 		$data['kategori'] = $this->Lurah_model->kategori_online()->result();
-		$this->load->view('template/header');
+		$this->load->view('template/header',$data);
 		$this->load->view('lurah/pilih_kategori',$data);
 		$this->load->view('template/footer');
 	}
 
 	public function non_aktif_kategori()
 	{
+		$data['judul'] = 'IKM - Non Aktif Kategori';
 		$data['kategori'] = $this->Lurah_model->kategori_offline()->result();
-		$this->load->view('template/header');
+		$this->load->view('template/header',$data);
 		$this->load->view('lurah/pilih_kategori',$data);
 		$this->load->view('template/footer');
 	}
 
 	public function laporan_bulan()
 	{
+		$data['judul'] = 'IKM - Laporan Bulan';
 		$data['kategori'] = $this->Lurah_model->kategori()->result();
-		$this->load->view('template/header');
+		$this->load->view('template/header',$data);
 		$this->load->view('lurah/laporan_bulan',$data);
 		$this->load->view('template/footer');
 	}
 
 	public function laporan_tahun()
 	{
+		$data['judul'] = 'IKM - Laporan Tahun';
 		$data['kategori'] = $this->Lurah_model->kategori()->result();
-		$this->load->view('template/header');
+		$this->load->view('template/header',$data);
 		$this->load->view('lurah/laporan_tahun',$data);
 		$this->load->view('template/footer');
 	}
@@ -74,11 +79,12 @@ class Lurah extends CI_Controller {
 		$kategori = $_GET['kategori'];
 		$bulan = $_GET['bulan'];
 		if (isset($kategori) && isset($bulan)) {
+			$data['judul'] = 'IKM - Cek Laporan';
 			$data['kategori'] = $this->Lurah_model->cek_kategori($kategori)->row();
 			$data['kategori_result'] = $this->Lurah_model->kategori()->result();
 			$data['responden'] = $this->Lurah_model->cek_hitung_responden($kategori,$bulan);
 			$data['join_responden'] = $this->Lurah_model->join_responden_jawaban_user($kategori,$bulan)->result();
-			$this->load->view('template/header');
+			$this->load->view('template/header',$data);
 			$this->load->view('lurah/cek_laporan',$data);
 			$this->load->view('template/footer');
 		}
@@ -256,11 +262,12 @@ class Lurah extends CI_Controller {
 		$kategori = $_GET['kategori'];
 		$tahun = $_GET['tahun'];
 		if (isset($kategori) && isset($tahun)) {
+			$data['judul'] = 'IKM - Cek Laporan Tahun';
 			$data['kategori'] = $this->Lurah_model->cek_kategori($kategori)->row();
 			$data['kategori_result'] = $this->Lurah_model->kategori()->result();
 			$data['responden'] = $this->Lurah_model->cek_hitung_responden_tahun($kategori,$tahun);
 			$data['join_responden'] = $this->Lurah_model->join_responden_jawaban_user_tahun($kategori,$tahun)->result();
-			$this->load->view('template/header');
+			$this->load->view('template/header',$data);
 			$this->load->view('lurah/cek_laporan_tahun',$data);
 			$this->load->view('template/footer');
 		}
@@ -451,7 +458,7 @@ class Lurah extends CI_Controller {
 			'required' => "Password Ulang kosong, Silakan Diisi"
         ]);
         if ($this->form_validation->run() == false){
-			$data['header'] = 'Admin | Profil';
+			$data['judul'] = 'Lurah - Ubah Biodata';
 			$data['user'] = $this->db->get_where('users', ['level' => $_SESSION['level']])->row();
 			$this->load->view('template/header', $data);
 			$this->load->view('lurah/ubah_password',$data);
