@@ -11,7 +11,7 @@
  Target Server Version : 50724
  File Encoding         : 65001
 
- Date: 23/01/2021 22:19:01
+ Date: 24/01/2021 04:59:38
 */
 
 SET NAMES utf8mb4;
@@ -177,11 +177,5 @@ INSERT INTO `users` VALUES (2, 'lurah', 'lurah', '123456', NULL, 'kepala_lurah',
 INSERT INTO `users` VALUES (3, 'admin kedua', 'admin_kedua', 'admin', NULL, 'admin', NULL, 3);
 INSERT INTO `users` VALUES (6, 'afif', 'afif', 'admin123', 'uploads/bank1.jpg', 'admin', NULL, 4);
 INSERT INTO `users` VALUES (8, 'afman', 'afman', 'afman', NULL, 'masyarakat', 'M-01', NULL);
-
--- ----------------------------
--- View structure for v_hasil
--- ----------------------------
-DROP VIEW IF EXISTS `v_hasil`;
-CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `v_hasil` AS (select `jawaban_user`.`id_jawaban_user` AS `id_jawaban_user`,`jawaban_user`.`jawaban1` AS `jawaban1`,`jawaban_user`.`jawaban2` AS `jawaban2`,`jawaban_user`.`jawaban3` AS `jawaban3`,`jawaban_user`.`jawaban4` AS `jawaban4`,`jawaban_user`.`jawaban5` AS `jawaban5`,`jawaban_user`.`jawaban6` AS `jawaban6`,`jawaban_user`.`jawaban7` AS `jawaban7`,`jawaban_user`.`jawaban8` AS `jawaban8`,`jawaban_user`.`id_responden` AS `id_responden`,`kategori`.`nama_kategori` AS `nama_kategori`,`kategori`.`id_kategori` AS `id_kategori` from ((`responden` join `jawaban_user` on(`responden`.`id_responden` = `jawaban_user`.`id_responden`)) join `kategori` on(`responden`.`id_kategori` = `kategori`.`id_kategori`))) ;
 
 SET FOREIGN_KEY_CHECKS = 1;
