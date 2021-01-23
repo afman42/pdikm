@@ -3,6 +3,38 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class Admin_model extends CI_Model
 {
+    public function akun_admin()
+    {
+        $this->db->select('*');
+        $this->db->from('admin');
+        $this->db->join('users', 'users.id_admin = admin.id_admin');
+        return $this->db->get();
+    }
+
+    public function cek_akun_admin($id)
+    {
+        $this->db->select('*');
+        $this->db->from('admin');
+        $this->db->join('users', 'users.id_admin = admin.id_admin');
+        $this->db->where('users.id_admin',$id);
+        return $this->db->get();
+    }
+
+    public function hapus_akun_admin($id)
+    {
+        $this->db->where('id_admin',$id);
+        $this->db->delete('users');
+
+        $this->db->where('id_admin',$id);
+        $this->db->delete('admin');
+    }
+
+    public function tambah_akun_admin($data_user,$data_admin)
+    {   
+        $this->db->insert('users', $data_user);
+        $this->db->insert('admin', $data_admin);
+    }
+
     public function akun_masyarakat()
     {
         $this->db->select('*');
@@ -146,16 +178,17 @@ class Admin_model extends CI_Model
     public function cek_hitung_responden($id)
     {
         $this->db->where('id_kategori', $id);
-        return $this->db->get('masyarakat');
+        return $this->db->get('jawaban_user');
     }
 
     public function join_responden_jawaban_user($id)
     {
         $this->db->select('*');
         $this->db->from('masyarakat');
-        $this->db->where('masyarakat.id_kategori', $id);
         $this->db->join('jawaban_user', 'masyarakat.id_masyarakat = jawaban_user.id_masyarakat');
+        $this->db->join('users', 'masyarakat.id_masyarakat = users.id_masyarakat');
         $this->db->order_by('jawaban_user.id_masyarakat', 'DESC');
+        $this->db->where('jawaban_user.id_kategori', $id);
         return $this->db->get();
     }
 

@@ -16,7 +16,7 @@
 
         <!-- plugins -->
         <?php
-        if ($uri == 'cek_akun_masyarakat') {
+        if ($uri == 'cek_akun_masyarakat' || $uri == 'cek_akun_admin') {
         ?>
         <link href="<?= base_url(); ?>assets/lightbox/dist/css/lightbox.css" rel="stylesheet" type="text/css" />
         <?php } ?>
@@ -86,7 +86,7 @@
             <div class="left-side-menu">
                 <div class="media user-profile mt-2 mb-2">
                     <?php
-                    $user = $this->db->get_where('users',['level' => $_SESSION['level']])->row();
+                    $user = $this->db->get_where('users',['level' => $this->session->level])->row();
                     if ($user->foto != null) { ?>
                         <img src="<?= base_url().$user->foto;?>" class="avatar-sm rounded-circle mr-2" alt="Shreyu" />
                         <img src="<?= base_url().$user->foto;?>" class="avatar-xs rounded-circle mr-2" alt="Shreyu" />
@@ -94,7 +94,7 @@
                         <img src="<?= base_url();?>assets/shreyu/images/users/avatar-7.jpg" class="avatar-sm rounded-circle mr-2" alt="Shreyu" />
                         <img src="<?= base_url();?>assets/shreyu/images/users/avatar-7.jpg" class="avatar-xs rounded-circle mr-2" alt="Shreyu" />
                     <?php }?>
-                    <?php if ($_SESSION['level'] == 'admin') {?>
+                    <?php if ($this->session->level == 'admin' || $this->session->level == 'admin_root') {?>
                         <div class="media-body">
                             <h6 class="pro-user-name mt-0 mb-0"><?= $user->nama;?></h6>
                             <span class="pro-user-desc">Administrator</span>
@@ -107,7 +107,7 @@
                     <?php } ?>
                 </div>
                 
-                <?php if ($_SESSION['level'] == 'admin') {
+                <?php if ($this->session->level == 'admin' || $this->session->level == 'admin_root') {
                     include 'sidebar_admin.php';
                 }else{
                     include 'sidebar_lurah.php';

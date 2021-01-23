@@ -8,6 +8,14 @@
                                     <span> Kategori </span>
                                 </a>
                             </li>
+                            <?php if ($this->session->level == 'admin_root'): ?>
+                            <li>
+                                <a href="<?= site_url('admin/akun_admin');?>">
+                                    <i data-feather="users"></i>
+                                    <span> Akun Admin </span>
+                                </a>
+                            </li>
+                            <?php endif ?>
                             <li>
                                 <a href="<?= site_url('admin/akun_masyarakat');?>">
                                     <i data-feather="users"></i>

@@ -3,4 +3,5 @@ PDIKM
 - belum dibuat
   - proses login
   - proses daftar, validasi, di masyarakat
-  - buat akun admin di halaman admin
+  - betulkan kodingan halaman lurah
+  - laporan di admin dan lurah

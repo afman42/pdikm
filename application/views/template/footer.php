@@ -83,7 +83,7 @@
         <script src="<?= base_url(); ?>assets/shreyu/js/vendor.min.js"></script>
         <?php
         $uri = $this->uri->segment(2);
-        if ($uri == 'cek_akun_masyarakat') {
+        if ($uri == 'cek_akun_masyarakat' || $uri == 'cek_akun_admin') {
         ?>
         <script src="<?= base_url(); ?>assets/lightbox/dist/js/lightbox.min.js"></script>
         <script type="text/javascript">

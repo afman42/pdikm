@@ -19,6 +19,124 @@ class Admin extends CI_Controller
 		redirect(site_url('admin/kategori'));
 	}
 
+	//Akun Admin
+	public function akun_admin()
+	{
+		$data['judul'] = 'IKM - Akun Admin';
+		$data['admin'] = $this->Admin_model->akun_admin()->result();
+		$this->load->view('template/header',$data);
+		$this->load->view('admin/akun_admin', $data);
+		$this->load->view('template/footer');
+	}
+
+	public function cek_akun_admin($id = NULL)
+	{
+		if (empty($id)) {
+			redirect(site_url('admin/akun_admin'));
+		}
+		$data['judul'] = 'IKM - Cek Akun Admin';
+		$data['admin'] = $this->Admin_model->cek_akun_admin($id)->row();
+		$this->load->view('template/header',$data);
+		$this->load->view('admin/cek_akun_admin');
+		$this->load->view('template/footer');
+	}
+
+	public function hapus_akun_admin($id)
+	{
+		$cek_user = $this->db->get_where('users',['id_admin' => $id])->row();
+		$cek_admin = $this->db->get_where('admin',['id_admin' => $id])->row();
+		if ($cek_user && $cek_admin) {
+			unlink($cek_user->foto);
+			$this->Admin_model->hapus_akun_admin($id);
+			echo "<script>alert('Berhasil di hapus');window.location.href='".site_url('admin/akun_admin')."'</script>";
+		}else{
+			echo "<script>alert('Tidak Berhasil di hapus');window.location.href='".site_url('admin/akun_admin')."'</script>";
+		}
+	}
+
+	public function tambah_akun_admin()
+	{
+		$this->form_validation->set_rules('nama', 'Nama', 'required|is_unique[users.nama]', [
+			'required' => "Nama kosong, Silakan Diisi",
+			'is_unique' => "Nama nya sudah ada Silakan Cari Lain"
+		]);
+		$this->form_validation->set_rules('username', 'Username', 'required|is_unique[users.username]', [
+			'required' => "Username kosong, Silakan Diisi",
+			'is_unique' => "Username nya sudah ada Silakan Cari Lain"
+		]);
+		$this->form_validation->set_rules('pekerjaan', 'Pekerjaan', 'required', [
+			'required' => "Pekerjaan kosong, Silakan Diisi"
+		]);
+		$this->form_validation->set_rules('jenis_kelamin', 'Jenis Kelamin', 'required', [
+			'required' => "Jenis Kelamin kosong, Silakan Diisi"
+		]);
+		$this->form_validation->set_rules('tempat_lahir', 'Tempat Lahir', 'required', [
+			'required' => "Tempat Lahir kosong, Silakan Diisi"
+		]);
+		$this->form_validation->set_rules('tgl_lahir', 'Tanggal Lahir', 'required', [
+			'required' => "Tanggal Lahir kosong, Silakan Diisi"
+		]);
+		$this->form_validation->set_rules('jenis_pendidikan', 'Jenis Pendidikan', 'required', [
+			'required' => "Jenis Pendidikan kosong, Silakan Diisi"
+		]);
+		$this->form_validation->set_rules('umur', 'Umur', 'required', [
+			'required' => "Umur kosong, Silakan Diisi"
+		]);
+		$this->form_validation->set_rules('tempat_lahir', 'Tempat Lahir', 'required', [
+			'required' => "Tempat Lahir kosong, Silakan Diisi"
+		]);
+		if ($this->form_validation->run() == false) {
+			$data['judul'] = 'IKM - Tambah Akun Admin';
+			// $data['admin'] = $this->Admin_model->akun_admin()->result();
+			$this->load->view('template/header',$data);
+			$this->load->view('admin/tambah_akun_admin');
+			$this->load->view('template/footer');
+		} else {
+			$this->insert_tambah_akun_admin();
+		}
+	}
+
+	public function insert_tambah_akun_admin()
+	{
+		$max = $this->db->query('SELECT MAX(id_admin) as idd_admin FROM admin')->row();
+		$this->load->library('upload');
+		$post = $this->input->post();
+		$config['upload_path'] = './uploads/';
+		$config['allowed_types'] = 'jpg|png|jpeg';
+		$config['max_size'] = 1024;
+		
+		$this->upload->initialize($config);
+			if ($this->upload->do_upload('foto')){
+				$upload_data = $this->upload->data();
+				$featured_image = $upload_data['file_name'];
+				$data_user = [
+					'username' => $post['username'],
+					'nama' => $post['nama'],
+					'password' => 'admin123',
+					'level' => 'admin',
+					'foto' => 'uploads/'.$featured_image,
+					'id_admin' => $max->idd_admin + 1
+				];
+				$data_admin = [
+					'id_admin' => $max->idd_admin + 1,
+					'tgl_lahir' => $post['tgl_lahir'],
+					'tempat_lahir' => $post['tempat_lahir'],
+					'jenis_kelamin' => $post['jenis_kelamin'],
+					'pekerjaan' => $post['pekerjaan'],
+					'umur' => $post['umur'],
+					'jenis_pendidikan' => $post['jenis_pendidikan'],
+				];
+			$this->Admin_model->tambah_akun_admin($data_user,$data_admin);
+			echo "<script>alert('Berhasil Ditambahkan');window.location.href='".site_url('admin/akun_admin')."'</script>";
+		}else{
+			$error = array('error' => $this->upload->display_errors());
+			$data['judul'] = 'IKM - Tambah Akun Admin';
+			$this->load->view('template/header', $data);
+			$this->load->view('admin/tambah_akun_admin',$error);
+			$this->load->view('template/footer');
+		}
+	}
+
 	//Akun Masyarakat
 	public function akun_masyarakat()
 	{

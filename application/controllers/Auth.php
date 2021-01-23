@@ -29,7 +29,7 @@ class Auth extends CI_Controller {
 		$model = $this->Auth_model->cek_login($username,$password);
 		if ($model->num_rows() > 0) {
 			$tampil = $model->row();
-			if ($tampil->level == 'admin') {
+			if ($tampil->level == 'admin' || $tampil->level == 'admin_root') {
 				$data = [
 					'id_user' => $tampil->id_user,
 					'level' => $tampil->level,
