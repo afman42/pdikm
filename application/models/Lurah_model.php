@@ -43,7 +43,7 @@ class Lurah_model extends CI_Model {
     {
         $this->db->select('*');
         $this->db->from('masyarakat');
-        $this->db->where('masyarakat.id_kategori',$kategori);
+        $this->db->where('jawaban_user.id_kategori',$kategori);
         $this->db->where('MONTH(masyarakat.tanggal)',$bulan);
         $this->db->join('jawaban_user', 'masyarakat.id_masyarakat = jawaban_user.id_masyarakat');
         $this->db->order_by('jawaban_user.id_masyarakat', 'DESC');
@@ -54,7 +54,7 @@ class Lurah_model extends CI_Model {
     {
         $this->db->select('COUNT(*) AS jumlah');
         $this->db->from('masyarakat');
-        $this->db->where('masyarakat.id_kategori',$id);
+        $this->db->where('jawaban_user.id_kategori',$id);
         $this->db->where('MONTH(masyarakat.tanggal)',$bulan);
         $this->db->join('jawaban_user', 'masyarakat.id_masyarakat = jawaban_user.id_masyarakat');
         $this->db->order_by('jawaban_user.id_masyarakat', 'DESC');
@@ -72,7 +72,7 @@ class Lurah_model extends CI_Model {
     {
         $this->db->select('*');
         $this->db->from('masyarakat');
-        $this->db->where('masyarakat.id_kategori',$kategori);
+        $this->db->where('jawaban_user.id_kategori',$kategori);
         $this->db->where('YEAR(masyarakat.tanggal)',$tahun);
         $this->db->join('jawaban_user', 'masyarakat.id_masyarakat = jawaban_user.id_masyarakat');
         $this->db->order_by('jawaban_user.id_masyarakat', 'DESC');
@@ -83,7 +83,7 @@ class Lurah_model extends CI_Model {
     {
         $this->db->select('COUNT(*) AS jumlah');
         $this->db->from('masyarakat');
-        $this->db->where('masyarakat.id_kategori',$id);
+        $this->db->where('jawaban_user.id_kategori',$id);
         $this->db->where('YEAR(masyarakat.tanggal)',$tahun);
         $this->db->join('jawaban_user', 'masyarakat.id_masyarakat = jawaban_user.id_masyarakat');
         $this->db->order_by('jawaban_user.id_masyarakat', 'DESC');
@@ -92,8 +92,9 @@ class Lurah_model extends CI_Model {
 
     public function cek_hitung_responden_tahun($id,$tahun)
     {
-        $this->db->where('id_kategori',$id);
+        $this->db->where('jawaban_user.id_kategori',$id);
         $this->db->where('YEAR(masyarakat.tanggal)',$tahun);
+        $this->db->join('jawaban_user', 'masyarakat.id_masyarakat = jawaban_user.id_masyarakat');
         return $this->db->get('masyarakat');
     }
 }

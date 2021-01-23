@@ -196,7 +196,7 @@ class Admin_model extends CI_Model
     {
         $this->db->select('COUNT(*) AS jumlah');
         $this->db->from('masyarakat');
-        $this->db->where('masyarakat.id_kategori', $id);
+        $this->db->where('jawaban_user.id_kategori', $id);
         $this->db->join('jawaban_user', 'masyarakat.id_masyarakat = jawaban_user.id_masyarakat');
         $this->db->order_by('jawaban_user.id_masyarakat', 'DESC');
         return $this->db->get();
