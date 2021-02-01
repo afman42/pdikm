@@ -44,20 +44,16 @@
                 <!-- /.card-body -->
             </div>
             <div class="text-center">
-                <?php if ($this->session->userdata('id')) : ?>
+                <?php if ($cek_sudah_isi != null) { ?>
+                    <p>Anda Sudah Mengerjakan Survey ini</p>
+                <?php } else if ($cek_sudah_isi == null && $this->session->userdata('id')) { ?>
                     <a href="<?= site_url('beranda/question/' . $id_kategori) ?>" class="btn btn-primary">Lanjut</a>
-                <?php else :
-                    $this->session->set_flashdata("msg", "<script type='text/javascript'>
-			alert('Sebelum mengisi kuisioner, anda harus login terlebih dahulu');
-		</script>"); ?>
-
-                    <?php
-                    
-                    
-                    if() ?>
-                    <a href="<?= site_url('beranda') ?>" class="btn btn-primary">Lanjut</a>
-
-                <?php endif ?>
+                <?php } else { ?>
+                    <script type='text/javascript'>
+                        alert('Sebelum mengisi kuisioner, anda harus login terlebih dahulu');
+                        window.location.href = '<?= site_url('beranda') ?>';
+                    </script>
+                <?php } ?>
             </div>
 
         </div>

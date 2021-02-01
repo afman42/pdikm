@@ -167,8 +167,8 @@
                         <div class="col-sm-4">
                             <!-- text input -->
                             <div class="form-group">
-                                <label>NIK</label>
-                                <input type="text" class="form-control" name="nik" placeholder="NIK" required>
+                                <label>NIK / STNK / SIM</label>
+                                <input type="text" class="form-control" name="nik" placeholder="Nomor NIK/STNK/SIM" required>
                             </div>
                         </div>
                         <div class="col-sm-4">
@@ -211,7 +211,7 @@
                                 <label>Pendidikan Terakhir</label>
                                 <select name="pendidikan" id="" class="form-control" required>
                                     <option value="" disabled selected>-- Pilih --</option>
-                                    <option value="SMA Kebawah">SMA Kebawah</option>
+                                    <option value="SMA/SMK">SMA/SMK</option>
                                     <option value="D1-D3-D4">D1-D3-D4</option>
                                     <option value="Sarjana (S1)">Sarjana (S1)</option>
                                     <option value="Master (S2) Keatas">Master (S2) Keatas</option>
@@ -247,7 +247,7 @@
                             <!-- text input -->
                             <div class="form-group">
                                 <label>Password</label>
-                                <input type="text" class="form-control" name="password" placeholder="Password" required>
+                                <input type="password" class="form-control" name="password" placeholder="Password" required>
                             </div>
                         </div>
                     </div>
