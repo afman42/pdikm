@@ -44,10 +44,19 @@
                 <!-- /.card-body -->
             </div>
             <div class="text-center">
-                <?php if ($this->session->login != TRUE): ?>
-                    <a href="<?= site_url('beranda/responden/'.$id_kategori) ?>" class="btn btn-primary">Lanjut</a>
-                <?php else: ?>
-                    <a href="<?= site_url('beranda/login_masyarakat') ?>" class="btn btn-primary">Lanjut</a>
+                <?php if ($this->session->userdata('id')) : ?>
+                    <a href="<?= site_url('beranda/question/' . $id_kategori) ?>" class="btn btn-primary">Lanjut</a>
+                <?php else :
+                    $this->session->set_flashdata("msg", "<script type='text/javascript'>
+			alert('Sebelum mengisi kuisioner, anda harus login terlebih dahulu');
+		</script>"); ?>
+
+                    <?php
+                    
+                    
+                    if() ?>
+                    <a href="<?= site_url('beranda') ?>" class="btn btn-primary">Lanjut</a>
+
                 <?php endif ?>
             </div>
 

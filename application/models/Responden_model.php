@@ -9,7 +9,7 @@ class Responden_model extends CI_Model
     }
     function kode_otomatis()
 	   {
-		   $query = $this->db->query("SELECT MAX(RIGHT(id_masyarakat,2)) AS responden FROM responden");
+		   $query = $this->db->query("SELECT MAX(RIGHT(id_masyarakat,2)) AS responden FROM masyarakat");
 		   if($query->num_rows()>0)
 		   {
 			   foreach($query->result() as $num)
@@ -17,16 +17,16 @@ class Responden_model extends CI_Model
 				   $no = ((int)$num->responden)+1;
 				   if($no<10)
 				   {
-					   $no_auto = "R-0".$no;
+					   $no_auto = "M-0".$no;
 				   }else if($no<100)
 				   {
-					   $no_auto = "R-".$no;
+					   $no_auto = "M-".$no;
 				   }else{
-					   $no_auto = "R-MAX";
+					   $no_auto = "M-MAX";
 				   }
 			   }
 		   }else{
-			   $no_auto = "R-01";
+			   $no_auto = "M-01";
 		   }
 		   return $no_auto;
 	   }

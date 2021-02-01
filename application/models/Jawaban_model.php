@@ -12,6 +12,6 @@ class Jawaban_model extends CI_Model
         
         $this->db->order_by('id_jawaban_user', 'DESCENDING');
         $this->db->where('id_kategori', $id);
-		return $this->db->get('v_hasil')->result();
+		return $this->db->get('v_graph')->result();
 	}
 }

@@ -56,7 +56,7 @@
                 <!-- /.card-header -->
                 <div class="card-body">
                     <form action="<?= site_url('beranda/simpan_jawaban') ?>" method="POST">
-                        <input type="hidden" name="id_responden" value="<?= $this->uri->segment(4) ?>">
+                        <input type="hidden" name="id_kategori" value="<?= $this->uri->segment(3) ?>">
                         <?php foreach ($soal as $s) { ?>
                             <p class="soal"> <?= $start++ . ". " . $s->soal ?></p>
                             <input type="radio" value="1" name="jawaban<?= $start_soal ?>" required> <label>&nbsp;<?= $s->jawaban1 ?></label><br>

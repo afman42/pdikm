@@ -7,4 +7,8 @@ class Auth_model extends CI_Model {
     {
         return $this->db->get_where('users',['username' => $username , 'password' => $password]);
     }
+    public function login($username,$password)
+    {
+        return $this->db->get_where('masyarakat',['username' => $username , 'password' => $password]);
+    }
 }

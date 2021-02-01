@@ -19,7 +19,8 @@ class Beranda extends CI_Controller {
 	public function index()
 	{
         $data = array(
-        'kategori' => $this->Admin_model->tampil_data_aktif()
+        'kategori' => $this->Admin_model->tampil_data_aktif(),
+        'kode' => $this->Responden_model->kode_otomatis()
         );
         $this->load->view('front/header');
         $this->load->view('front/navbar');
@@ -37,7 +38,8 @@ class Beranda extends CI_Controller {
         if($row != null){
             $data = array(
                 'id_kategori' => set_value('id_kategori', $row->id_kategori),
-                'persyaratan' => set_value('persyaratan', $row->persyaratan)
+                'persyaratan' => set_value('persyaratan', $row->persyaratan),
+                'cek' => $this->Jawaban_model->t
             );
             $this->load->view('front/header');
             $this->load->view('front/navbar');
@@ -45,6 +47,7 @@ class Beranda extends CI_Controller {
             $this->load->view('front/footer');
         }
     }
+    
 
     public function login_masyarakat()
     {
@@ -56,12 +59,12 @@ class Beranda extends CI_Controller {
         );
         if ($this->form_validation->run() == FALSE)
         {
-            $this->load->view('front/login_masyarakat');
+            redirect(site_url('beranda'));
         }else{   
         
             if($this->cek_login() == TRUE){
                 
-                $this->home();
+              
             }
             else{
               $this->session->set_flashdata('error','Harap diisi Email dan password dengan benar');
@@ -70,7 +73,7 @@ class Beranda extends CI_Controller {
         }
     }
 
-    protected function cek_login()
+    public function cek_login()
     {
         $this->load->model('Auth_model','model');
         $username    = $this->input->post('username',TRUE);
@@ -82,23 +85,35 @@ class Beranda extends CI_Controller {
         if( $query->num_rows() > 0 )
         {
             $row = $query->row(1);
-            if($row->level == 'masyarakat' ){
+            
                 $data = array(
                     'username'   => $row->username,
                     'level'   => $row->level,
                     'login'   => TRUE,
-                    'id_masyarakat' => $row->id_masyarakat
+                    'id' => $row->id_masyarakat
                 );
-            }
+           
             
             $this->session->set_userdata($data);
-            return TRUE;
+            $this->session->set_flashdata("msg","<script type='text/javascript'>
+			alert('Anda berhasil Login');
+		</script>");
+            redirect(site_url('beranda'));
         }
         else{
-            return FALSE;
+            $this->session->set_flashdata("msg","<script type='text/javascript'>
+			alert('Harap diisi Email dan password dengan benar');
+		</script>");
+              redirect(site_url('beranda'));
         }
     }
-
+    function logout()
+    {
+        $this->session->sess_destroy();
+        $url = site_url('beranda');
+      
+        redirect($url);
+    }
     public function home()
     {
         $data['level'] = $this->session->userdata('level');
@@ -106,6 +121,7 @@ class Beranda extends CI_Controller {
         if($data['level'] == 'masyarakat'){
             redirect(site_url('beranda/penjelasan/'.$this->session->id_penjelasan
         ));
+
         }
     }
     // public function responden($id)
@@ -148,13 +164,13 @@ class Beranda extends CI_Controller {
     public function simpan_responden()
     {
         $data = array (
-            'id_responden' => $this->input->post('id_responden'),
+            'id_masyarakat' => $this->input->post('id_masyarakat'),
             'tanggal' => $this->input->post('tanggal'),
             'nama' => $this->input->post('nama'),
             'nip' => $this->input->post('nip'),
             'umur' => $this->input->post('umur'),
             'jenis_kelamin' => $this->input->post('jenis_kelamin'),
-            'jenis_pendidikan' => $this->input->post('jenis_pendidikan'),
+            'pendidikan' => $this->input->post('pendidikan'),
             'pekerjaan' => $this->input->post('pekerjaan'),
             'id_kategori' => $this->input->post('id_kategori')
         );
@@ -163,7 +179,7 @@ class Beranda extends CI_Controller {
     }
     public function simpan_jawaban()
     {
-        
+       
         $data = array (
             'id_jawaban_user' => $this->input->post('id_jawaban_user'),
             'jawaban1' => $this->input->post('jawaban1'),
@@ -177,7 +193,8 @@ class Beranda extends CI_Controller {
             // 'jawaban9' => $this->input->post('jawaban9'),
             // 'jawaban10' => $this->input->post('jawaban10'),
             'komentar' => $this->input->post('komentar'),
-            'id_responden' => $this->input->post('id_responden')
+            'id_masyarakat' => $this->session->userdata('id'),
+            'id_kategori' => $this->input->post('id_kategori'),
         );
         $this->Jawaban_model->simpan_data($data);
         redirect(site_url('beranda/finish'));
@@ -192,5 +209,25 @@ class Beranda extends CI_Controller {
         $this->load->view('front/navbar');
         $this->load->view('front/hasil', $data);
         $this->load->view('front/footer');
+    }
+    public function simpan_user()
+    {
+        $data = array(
+            'id_masyarakat' => $this->input->post('id_masyarakat', TRUE),
+            'tgl_lahir' => $this->input->post('tgl_lahir', TRUE),
+            'nik' => $this->input->post('nik', TRUE),
+            'umur' => $this->input->post('umur', TRUE),
+            'jenis_kelamin' => $this->input->post('jenis_kelamin', TRUE),
+            'pendidikan' => $this->input->post('pendidikan', TRUE),
+            'pekerjaan' => $this->input->post('pekerjaan', TRUE),
+            'nama' => $this->input->post('nama', TRUE),
+            'username' => $this->input->post('username', TRUE),
+            'password' => $this->input->post('password', TRUE),
+        );
+        $this->Responden_model->simpan_data($data);
+        $this->session->set_flashdata("msg","<script type='text/javascript'>
+        alert('Selamat anda berhasil mendaftar, silahkan Login');
+    </script>");
+        redirect(site_url('beranda'));
     }
 }

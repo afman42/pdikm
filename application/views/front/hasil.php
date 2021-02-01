@@ -90,7 +90,7 @@
                                         <tr>
                                             <td><?= ++$start ?></td>
                                             <td><?= $a->id_jawaban_user ?></td>
-                                            <td><?= $a->id_responden ?></td>
+                                            <td><?= $a->id_masyarakat ?></td>
                                             <td>
                                                 <?php if ($hasil == 1 || $hasil < 2) {
                                                     $sangat_baik++;
