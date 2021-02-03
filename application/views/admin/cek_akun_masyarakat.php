@@ -30,7 +30,7 @@
                                             </tr>
                                             <tr>
                                                 <td>Jenis Pendidikan</td>
-                                                <td><?= $masyarakat->jenis_pendidikan;?></td>
+                                                <td><?= $masyarakat->pendidikan;?></td>
                                             </tr>
                                             <tr>
                                                 <td>Pekerjaan</td>
@@ -43,12 +43,12 @@
                             <div class="col-6">
                                 <div class="card">
                                     <div class="card-body">
-                                        <h4>Foto :</h4>
-                                        <a href="<?= base_url().$masyarakat->foto;?>" data-lightbox="image-1" data-title="Foto Diri">
-                                            <img src="<?= base_url().$masyarakat->foto;?>" class="img-fluid">
-                                        </a>
+                                        <!-- <h4>Foto :</h4>
+                                        <a href="" data-lightbox="image-1" data-title="Foto Diri">
+                                            <img src="" class="img-fluid">
+                                        </a> -->
                                         <h4>Foto KTP :</h4>
-                                        <a href="<?= base_url().$masyarakat->foto;?>" data-lightbox="image-2" data-title="Foto KTP/SIM/STNK">
+                                        <a href="<?= base_url().$masyarakat->foto_ktp;?>" data-lightbox="image-2" data-title="Foto KTP/SIM/STNK">
                                             <img src="<?= base_url().$masyarakat->foto_ktp;?>" class="img-fluid">
                                         </a>
                                     </div>

@@ -8,7 +8,7 @@
                                     <span> Kategori </span>
                                 </a>
                             </li>
-                            <?php if ($this->session->level == 'admin_root'): ?>
+                            <?php if ($this->session->id_admin == '1'): ?>
                             <li>
                                 <a href="<?= site_url('admin/akun_admin');?>">
                                     <i data-feather="users"></i>

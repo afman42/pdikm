@@ -131,7 +131,7 @@ class Lurah extends CI_Controller {
 			$pdf->Cell(30,6,'Pekerjaan',1,0,'C');
 			$pdf->Cell(30,6,'Jenis Kelamin',1,0,'C');
 			$pdf->Cell(10,6,'Umur',1,0,'C');
-			$pdf->Cell(25,6,'Waktu',1,0,'C');
+			$pdf->Cell(25,6,'Tgl Lahir',1,0,'C');
 			$pdf->Cell(10,6,'RL-1',1,0,'C');
 			$pdf->Cell(10,6,'RL-2',1,0,'C');
 			$pdf->Cell(10,6,'RL-3',1,0,'C');
@@ -149,7 +149,7 @@ class Lurah extends CI_Controller {
 				$no++;
 				$pdf->Cell(10,6,$no,1,0, 'C');
 				$pdf->Cell(40,6,word_limiter($data->nama, 2),1,0, 'L');
-				$pdf->Cell(40,6,$data->jenis_pendidikan,1,0, 'C');
+				$pdf->Cell(40,6,$data->pendidikan,1,0, 'C');
 				$pdf->Cell(30,6,$data->pekerjaan,1,0, 'C');
 				$pdf->Cell(30,6,$data->jenis_kelamin,1,0, 'C');
 				$pdf->Cell(10,6,$data->umur,1,0, 'C');
@@ -332,7 +332,7 @@ class Lurah extends CI_Controller {
 				$no++;
 				$pdf->Cell(10,6,$no,1,0, 'C');
 				$pdf->Cell(40,6,word_limiter($data->nama, 2),1,0, 'L');
-				$pdf->Cell(40,6,$data->jenis_pendidikan,1,0, 'C');
+				$pdf->Cell(40,6,$data->pendidikan,1,0, 'C');
 				$pdf->Cell(30,6,$data->pekerjaan,1,0, 'C');
 				$pdf->Cell(30,6,$data->jenis_kelamin,1,0, 'C');
 				$pdf->Cell(10,6,$data->umur,1,0, 'C');

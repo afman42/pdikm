@@ -162,10 +162,10 @@ class Admin extends CI_Controller
 	public function hapus_akun_masyarakat($id = NULL)
 	{
 		$cek_masyarakat = $this->db->get_where('masyarakat',['id_masyarakat' => $id])->row();
-		$cek_user = $this->db->get_where('users',['id_masyarakat' => $id])->row();
-		if ($cek_masyarakat && $cek_user) {
+		// $cek_user = $this->db->get_where('users',['id_masyarakat' => $id])->row();
+		if ($cek_masyarakat) {
 			unlink($cek_masyarakat->foto_ktp);
-			unlink($cek_user->foto);
+			// unlink($cek_user->foto);
 			$this->Admin_model->hapus_masyarakat($id);
 			echo "<script>alert('Akun Berhasil Dihapus');window.location.href='".site_url('admin/akun_masyarakat')."'</script>";
 		}
@@ -494,7 +494,7 @@ class Admin extends CI_Controller
             $no++;
             $pdf->Cell(10,6,$no,1,0, 'C');
             $pdf->Cell(40,6,word_limiter($data->nama, 2),1,0, 'L');
-            $pdf->Cell(40,6,$data->jenis_pendidikan,1,0, 'C');
+            $pdf->Cell(40,6,$data->pendidikan,1,0, 'C');
             $pdf->Cell(30,6,$data->pekerjaan,1,0, 'C');
             $pdf->Cell(30,6,$data->jenis_kelamin,1,0, 'C');
             $pdf->Cell(10,6,$data->umur,1,0, 'C');

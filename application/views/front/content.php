@@ -161,7 +161,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form method="POST" action="<?= site_url('beranda/simpan_user') ?>">
+                <form method="POST" action="<?= site_url('beranda/simpan_user') ?>" enctype="multipart/form-data">
                 <input type="hidden" value="<?= $kode ?>" name="id_masyarakat">
                     <div class="row">
                         <div class="col-sm-4">
@@ -211,7 +211,7 @@
                                 <label>Pendidikan Terakhir</label>
                                 <select name="pendidikan" id="" class="form-control" required>
                                     <option value="" disabled selected>-- Pilih --</option>
-                                    <option value="SMA/SMK">SMA/SMK</option>
+                                    <option value="SMA/SMK Ke bawah">SMA/SMK Ke bawah</option>
                                     <option value="D1-D3-D4">D1-D3-D4</option>
                                     <option value="Sarjana (S1)">Sarjana (S1)</option>
                                     <option value="Master (S2) Keatas">Master (S2) Keatas</option>
@@ -252,13 +252,16 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-sm-12">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Foto KTP</label>
+                                <input type="file" name="foto_ktp">
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
                             <button type="submit" class="btn btn-primary float-right">Simpan</button>
                         </div>
                     </div>
-
-
-
                 </form>
             </div>
         </div>

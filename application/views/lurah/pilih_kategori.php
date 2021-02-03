@@ -29,7 +29,7 @@
                                                     <th>Nama</th>
                                                     <th>Penjelasan</th>
                                                     <th>Status</th>
-                                                    <th>Aksi</th>
+                                                    <!-- <th>Aksi</th> -->
                                                 </tr>
                                             </thead>
                                         
@@ -52,7 +52,7 @@
                                                     }
                                                     ?>
                                                     </td>
-                                                    <td><a href="<?= site_url('lurah/cek_kategori/'.$k->id_kategori);?>" class="btn btn-sm btn-danger">Cek</a></td>
+                                                    <!-- <td><a href="<?php // site_url('lurah/cek_kategori/'.$k->id_kategori);?>" class="btn btn-sm btn-danger">Cek</a></td> -->
                                                 </tr>
                                                 <?php } ?>
                                             </tbody>

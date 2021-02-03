@@ -50,11 +50,11 @@
                                                 <tr>
                                                     <td><center><?= $no++;?></center></td>
                                                     <td><?= $k->nama;?></td>
-                                                    <td><center><?= $k->jenis_pendidikan;?></center></td>
+                                                    <td><center><?= $k->pendidikan;?></center></td>
                                                     <td><?= $k->pekerjaan;?></td>
                                                     <td><center><?= $k->jenis_kelamin;?></center></td>
                                                     <td><center><?= $k->umur;?></center></td>
-                                                    <td><center><?= $k->tanggal;?></center></td>
+                                                    <td><center><?= $k->tgl_lahir;?></center></td>
                                                     <td><center><?= $k->jawaban1;?></center></td>
                                                     <td><center><?= $k->jawaban2;?></center></td>
                                                     <td><center><?= $k->jawaban3;?></center></td>
@@ -164,7 +164,7 @@
                                             <tbody>
                                             <?php
                                             $no = 1;
-                                            $query = $this->db->query("SELECT * FROM masyarakat inner join jawaban_user on masyarakat.id_masyarakat = jawaban_user.id_masyarakat inner join users on masyarakat.id_masyarakat = users.id_masyarakat where jawaban_user.id_kategori='$kategori->id_kategori'")->result();
+                                            $query = $this->db->query("SELECT * FROM masyarakat inner join jawaban_user on masyarakat.id_masyarakat = jawaban_user.id_masyarakat where jawaban_user.id_kategori='$kategori->id_kategori'")->result();
                                             foreach ($query as $k) {
                                             ?>
                                             <tr>

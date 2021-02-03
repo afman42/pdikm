@@ -51,31 +51,31 @@ class Beranda extends CI_Controller
     }
 
 
-    public function login_masyarakat()
-    {
-        $this->form_validation->set_rules(
-            'username',
-            'Username',
-            'required|trim|htmlspecialchars',
-            ['required' => "Username Harus Diisi"]
-        );
-        $this->form_validation->set_rules(
-            'password',
-            'Password',
-            'required|trim|htmlspecialchars',
-            ['required' => "Password Harus Diisi"]
-        );
-        if ($this->form_validation->run() == FALSE) {
-            redirect(site_url('beranda'));
-        } else {
+    // public function login_masyarakat()
+    // {
+    //     $this->form_validation->set_rules(
+    //         'username',
+    //         'Username',
+    //         'required|trim|htmlspecialchars',
+    //         ['required' => "Username Harus Diisi"]
+    //     );
+    //     $this->form_validation->set_rules(
+    //         'password',
+    //         'Password',
+    //         'required|trim|htmlspecialchars',
+    //         ['required' => "Password Harus Diisi"]
+    //     );
+    //     if ($this->form_validation->run() == FALSE) {
+    //         redirect(site_url('beranda'));
+    //     } else {
 
-            if ($this->cek_login() == TRUE) {
-            } else {
-                $this->session->set_flashdata('error', 'Harap diisi Email dan password dengan benar');
-                redirect(site_url('beranda/login_masyarakat'));
-            }
-        }
-    }
+    //         if ($this->cek_login() == TRUE) {
+    //         } else {
+    //             $this->session->set_flashdata('error', 'Harap diisi Email dan password dengan benar');
+    //             redirect(site_url('beranda/login_masyarakat'));
+    //         }
+    //     }
+    // }
 
     public function cek_login()
     {
@@ -177,6 +177,7 @@ class Beranda extends CI_Controller
         $this->Responden_model->simpan_data($data);
         redirect(site_url('beranda/question/' . $data['id_kategori']) . '/' . $data['id_responden']);
     }
+    
     public function simpan_jawaban()
     {
 
@@ -195,6 +196,7 @@ class Beranda extends CI_Controller
             'komentar' => $this->input->post('komentar'),
             'id_masyarakat' => $this->session->userdata('id'),
             'id_kategori' => $this->input->post('id_kategori'),
+            'tanggal' => date('Y-m-d'),
         );
         $this->Jawaban_model->simpan_data($data);
         redirect(site_url('beranda/finish'));
@@ -212,22 +214,35 @@ class Beranda extends CI_Controller
     }
     public function simpan_user()
     {
-        $data = array(
-            'id_masyarakat' => $this->input->post('id_masyarakat', TRUE),
-            'tgl_lahir' => $this->input->post('tgl_lahir', TRUE),
-            'nik' => $this->input->post('nik', TRUE),
-            'umur' => $this->input->post('umur', TRUE),
-            'jenis_kelamin' => $this->input->post('jenis_kelamin', TRUE),
-            'pendidikan' => $this->input->post('pendidikan', TRUE),
-            'pekerjaan' => $this->input->post('pekerjaan', TRUE),
-            'nama' => $this->input->post('nama', TRUE),
-            'username' => $this->input->post('username', TRUE),
-            'password' => $this->input->post('password', TRUE),
-        );
-        $this->Responden_model->simpan_data($data);
-        $this->session->set_flashdata("msg", "<script type='text/javascript'>
-        alert('Selamat anda berhasil mendaftar, silahkan Login');
-    </script>");
-        redirect(site_url('beranda'));
+        $this->load->library('upload');
+        $post = $this->input->post();
+        $config['upload_path'] = './uploads/';
+        $config['allowed_types'] = 'jpg|png|jpeg';
+        $config['max_size'] = 1024;
+        
+        $this->upload->initialize($config);
+        if ($this->upload->do_upload('foto_ktp')){
+            $upload_data = $this->upload->data();
+            $featured_image = $upload_data['file_name'];
+            
+            $data = array(
+                'id_masyarakat' => $this->input->post('id_masyarakat', TRUE),
+                'tgl_lahir' => $this->input->post('tgl_lahir', TRUE),
+                'nik' => $this->input->post('nik', TRUE),
+                'umur' => $this->input->post('umur', TRUE),
+                'jenis_kelamin' => $this->input->post('jenis_kelamin', TRUE),
+                'pendidikan' => $this->input->post('pendidikan', TRUE),
+                'pekerjaan' => $this->input->post('pekerjaan', TRUE),
+                'nama' => $this->input->post('nama', TRUE),
+                'username' => $this->input->post('username', TRUE),
+                'password' => $this->input->post('password', TRUE),
+                'foto_ktp' => 'uploads/'.$featured_image
+            );
+            $this->Responden_model->simpan_data($data);
+            $this->session->set_flashdata("msg", "<script type='text/javascript'>
+            alert('Selamat anda berhasil mendaftar, silahkan Login');
+        </script>");
+            redirect(site_url('beranda'));
+        }
     }
 }

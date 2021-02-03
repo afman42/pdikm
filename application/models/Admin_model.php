@@ -39,7 +39,7 @@ class Admin_model extends CI_Model
     {
         $this->db->select('*');
         $this->db->from('masyarakat');
-        $this->db->join('users', 'users.id_masyarakat = masyarakat.id_masyarakat');
+        // $this->db->join('users', 'users.id_masyarakat = masyarakat.id_masyarakat');
         return $this->db->get();
     }
 
@@ -47,8 +47,8 @@ class Admin_model extends CI_Model
     {
         $this->db->select('*');
         $this->db->from('masyarakat');
-        $this->db->join('users', 'users.id_masyarakat = masyarakat.id_masyarakat');
-        $this->db->where('users.id_masyarakat', $id_masyarakat);
+        // $this->db->join('users', 'users.id_masyarakat = masyarakat.id_masyarakat');
+        $this->db->where('id_masyarakat', $id_masyarakat);
         return $this->db->get();
     }
 
@@ -57,8 +57,8 @@ class Admin_model extends CI_Model
         $this->db->where('id_masyarakat',$id_masyarakat);
         $this->db->delete('masyarakat');
 
-        $this->db->where('id_masyarakat',$id_masyarakat);
-        $this->db->delete('users');
+        // $this->db->where('id_masyarakat',$id_masyarakat);
+        // $this->db->delete('users');
 
         // $this->db->where('id_masyarakat',$id_masyarakat);
         // $this->db->delete('jawaban_user');
@@ -186,7 +186,7 @@ class Admin_model extends CI_Model
         $this->db->select('*');
         $this->db->from('masyarakat');
         $this->db->join('jawaban_user', 'masyarakat.id_masyarakat = jawaban_user.id_masyarakat');
-        $this->db->join('users', 'masyarakat.id_masyarakat = users.id_masyarakat');
+        // $this->db->join('users', 'masyarakat.id_masyarakat = users.id_masyarakat');
         $this->db->order_by('jawaban_user.id_masyarakat', 'DESC');
         $this->db->where('jawaban_user.id_kategori', $id);
         return $this->db->get();
